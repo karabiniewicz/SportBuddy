@@ -1,7 +1,17 @@
 @url = http://localhost:5000
 
 ###
-GET {{url}}
+GET {{url}}/matches
 
 ###
-GET {{url}}
+PUT {{url}}/matches
+
+###
+POST {{url}}/matches
+Content-Type: application/json
+
+{
+    "id": "00000000-0000-0000-0000-000000000001",
+    "name": "match1",
+    "date": "2020-01-01T00:00:00+00:00"
+}
