@@ -1,10 +1,24 @@
 @url = http://localhost:5000
+@matchId = 8d9baf48-b6bc-4f87-993c-2ab4e3724b9c
 
 ###
 GET {{url}}/matches
 
 ###
-PUT {{url}}/matches
+GET {{url}}/matches/{{matchId}}
+
+###
+POST {{url}}/matches
+Content-Type: application/json
+
+{
+    "id": "00000000-0000-0000-0000-000000000001",
+    "name": "match1",
+    "date": "2020-01-01T00:00:00+00:00"
+}
+
+###
+GET {{url}}/groups
 
 ###
 POST {{url}}/matches

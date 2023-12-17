@@ -8,6 +8,7 @@ public class Match
     public string Name { get; set; }
     public Discipline Discipline { get; set; }
     public DateTimeOffset Date { get; set; }
+    public string GroupName { get; set; }
     
 // public Localization Localization { get; set; }
     public Match()
@@ -16,7 +17,7 @@ public class Match
     
     public Match(string name, DateTimeOffset date, Discipline discipline)
     {
-        Id = new Guid();
+        Id = Guid.NewGuid();
         Name = name;
         Date = date;
         Discipline = discipline;
