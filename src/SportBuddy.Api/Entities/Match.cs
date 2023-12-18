@@ -9,8 +9,8 @@ public class Match
     public Discipline Discipline { get; }
     public DateTimeOffset Date { get; }
     public string GroupName { get; }
+    // TODO: public Localization Localization { get; }
     
-// public Localization Localization { get; set; }
     public Match()
     {
     }
