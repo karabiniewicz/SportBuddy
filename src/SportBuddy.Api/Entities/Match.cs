@@ -4,22 +4,23 @@ namespace SportBuddy.Api.Entities;
 
 public class Match
 {
-    public Guid Id { get; set; }
-    public string Name { get; set; }
-    public Discipline Discipline { get; set; }
-    public DateTimeOffset Date { get; set; }
-    public string GroupName { get; set; }
+    public Guid Id { get; }
+    public string Name { get; }
+    public Discipline Discipline { get; }
+    public DateTimeOffset Date { get; }
+    public string GroupName { get; }
     
 // public Localization Localization { get; set; }
     public Match()
     {
     }
     
-    public Match(string name, DateTimeOffset date, Discipline discipline)
+    public Match(string name, Discipline discipline, DateTimeOffset date, string groupName)
     {
         Id = Guid.NewGuid();
         Name = name;
         Date = date;
         Discipline = discipline;
+        GroupName = groupName;
     }
 }

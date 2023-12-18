@@ -1,5 +1,5 @@
 @url = http://localhost:5000
-@matchId = 8d9baf48-b6bc-4f87-993c-2ab4e3724b9c
+@matchId = 3d6945a8-84ec-4ed9-85db-505da63753da
 
 ###
 GET {{url}}/matches

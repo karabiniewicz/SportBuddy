@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SportBuddy.Api.Commands;
 using SportBuddy.Api.Consts;
+using SportBuddy.Api.DTO;
 using SportBuddy.Api.Entities;
 
 namespace SportBuddy.Api.Controllers;
@@ -10,16 +12,16 @@ public class MatchesController : ControllerBase
 {
     private static readonly List<Match> _matches = new()
     {
-        new Match("don balon pon", DateTimeOffset.Now, Discipline.Football),
-        new Match("orlik hellera", DateTimeOffset.Now.AddDays(2), Discipline.Football),
-        new Match("orlik hellera", DateTimeOffset.Now.AddDays(5), Discipline.Basketball)
+        new Match("don balon pon", Discipline.Football, DateTimeOffset.Now, "g1"),
+        new Match("orlik hellera", Discipline.Football, DateTimeOffset.Now.AddDays(2), "g1"),
+        new Match("orlik hellera", Discipline.Basketball, DateTimeOffset.Now.AddDays(5), "g1"),
     };
 
     [HttpGet("{matchId:guid}")]
-    public ActionResult<Match> Get(Guid matchId)
+    public ActionResult<MatchDto> Get(Guid matchId)
     {
         var match = _matches.Find(x => x.Id == matchId);
-        return match is null ? NotFound() : Ok(match);
+        return match is null ? NotFound() : Ok(match.AsDto());
     }
     
     [HttpGet]
@@ -27,8 +29,10 @@ public class MatchesController : ControllerBase
         => Ok(_matches);
     
     [HttpPost]
-    public ActionResult Post(Match match)
+    public ActionResult Post(CreateMatchCommand command)
     {
+        var (name, discipline, dateTimeOffset, groupName) = command;
+        var match = new Match(name, discipline, dateTimeOffset, groupName);
         _matches.Add(match);
         return NoContent();
     }
