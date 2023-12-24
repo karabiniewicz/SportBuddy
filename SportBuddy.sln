@@ -7,6 +7,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{1D571D7F-C1E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SportBuddy.Api", "src\SportBuddy.Api\SportBuddy.Api.csproj", "{4AC61196-0FAB-4EF2-91AA-F2A06F9067A1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SportBuddy.Core", "src\SportBuddy.Core\SportBuddy.Core.csproj", "{4000D3D3-3E49-4657-87B1-5AA9EFF486AC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SportBuddy.Application", "src\SportBuddy.Application\SportBuddy.Application.csproj", "{AD95A23E-B3D7-4D03-80F7-24C45331A143}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SportBuddy.Infrastructure", "src\SportBuddy.Infrastructure\SportBuddy.Infrastructure.csproj", "{FB2CE8D4-F8D0-485B-9860-AABB45B951FC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,8 +26,23 @@ Global
 		{4AC61196-0FAB-4EF2-91AA-F2A06F9067A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4AC61196-0FAB-4EF2-91AA-F2A06F9067A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4AC61196-0FAB-4EF2-91AA-F2A06F9067A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4000D3D3-3E49-4657-87B1-5AA9EFF486AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4000D3D3-3E49-4657-87B1-5AA9EFF486AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4000D3D3-3E49-4657-87B1-5AA9EFF486AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4000D3D3-3E49-4657-87B1-5AA9EFF486AC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD95A23E-B3D7-4D03-80F7-24C45331A143}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD95A23E-B3D7-4D03-80F7-24C45331A143}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD95A23E-B3D7-4D03-80F7-24C45331A143}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD95A23E-B3D7-4D03-80F7-24C45331A143}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB2CE8D4-F8D0-485B-9860-AABB45B951FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB2CE8D4-F8D0-485B-9860-AABB45B951FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB2CE8D4-F8D0-485B-9860-AABB45B951FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB2CE8D4-F8D0-485B-9860-AABB45B951FC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{4AC61196-0FAB-4EF2-91AA-F2A06F9067A1} = {1D571D7F-C1E3-4BE1-8D4C-39A925372D4D}
+		{4000D3D3-3E49-4657-87B1-5AA9EFF486AC} = {1D571D7F-C1E3-4BE1-8D4C-39A925372D4D}
+		{AD95A23E-B3D7-4D03-80F7-24C45331A143} = {1D571D7F-C1E3-4BE1-8D4C-39A925372D4D}
+		{FB2CE8D4-F8D0-485B-9860-AABB45B951FC} = {1D571D7F-C1E3-4BE1-8D4C-39A925372D4D}
 	EndGlobalSection
 EndGlobal

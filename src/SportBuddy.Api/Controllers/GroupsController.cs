@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SportBuddy.Api.Entities;
+using SportBuddy.Core.Entities;
 
 namespace SportBuddy.Api.Controllers;
 

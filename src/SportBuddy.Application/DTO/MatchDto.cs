@@ -1,5 +1,5 @@
-﻿using SportBuddy.Api.Consts;
+﻿using SportBuddy.Core.Consts;
 
-namespace SportBuddy.Api.DTO;
+namespace SportBuddy.Application.DTO;
 
 public record MatchDto(Guid Id, string Name, Discipline Discipline, DateTimeOffset Date, string GroupName);

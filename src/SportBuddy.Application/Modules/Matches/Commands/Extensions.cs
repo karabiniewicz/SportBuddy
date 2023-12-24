@@ -1,7 +1,7 @@
-﻿using SportBuddy.Api.DTO;
-using SportBuddy.Api.Entities;
+﻿using SportBuddy.Application.DTO;
+using SportBuddy.Core.Entities;
 
-namespace SportBuddy.Api.Commands;
+namespace SportBuddy.Application.Modules.Matches.Commands;
 
 public static class Extensions
 {

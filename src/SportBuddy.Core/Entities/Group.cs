@@ -1,4 +1,4 @@
-﻿namespace SportBuddy.Api.Entities;
+﻿namespace SportBuddy.Core.Entities;
 
 public class Group
 {

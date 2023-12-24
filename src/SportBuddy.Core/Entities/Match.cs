@@ -1,6 +1,6 @@
-﻿using SportBuddy.Api.Consts;
+﻿using SportBuddy.Core.Consts;
 
-namespace SportBuddy.Api.Entities;
+namespace SportBuddy.Core.Entities;
 
 public class Match
 {

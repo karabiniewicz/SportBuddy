@@ -1,4 +1,4 @@
-﻿namespace SportBuddy.Api.Exceptions;
+﻿namespace SportBuddy.Core.Exceptions;
 
 public abstract class CustomException : Exception
 {

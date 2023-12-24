@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\SportBuddy.Core\SportBuddy.Core.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Modules\Groups\" />
+      <Folder Include="Modules\Matches\Queries\" />
+    </ItemGroup>
+
+</Project>

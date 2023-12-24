@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SportBuddy.Api.Commands;
-using SportBuddy.Api.Consts;
-using SportBuddy.Api.DTO;
-using SportBuddy.Api.Entities;
+using SportBuddy.Application.DTO;
+using SportBuddy.Application.Modules.Matches.Commands;
+using SportBuddy.Application.Modules.Matches.Commands.CreateMatch;
+using SportBuddy.Core.Consts;
+using SportBuddy.Core.Entities;
 
 namespace SportBuddy.Api.Controllers;
 

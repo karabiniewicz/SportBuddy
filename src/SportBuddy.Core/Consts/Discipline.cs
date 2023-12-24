@@ -1,4 +1,4 @@
-﻿namespace SportBuddy.Api.Consts;
+﻿namespace SportBuddy.Core.Consts;
 
 public enum Discipline
 {
