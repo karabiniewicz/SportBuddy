@@ -1,5 +1,9 @@
+using SportBuddy.Infrastructure;
+
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddControllers();
+builder.Services
+    .AddInfrastructure()
+    .AddControllers();
 
 var app = builder.Build();
 app.MapControllers();
