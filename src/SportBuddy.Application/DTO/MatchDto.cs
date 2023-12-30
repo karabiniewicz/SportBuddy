@@ -2,4 +2,4 @@
 
 namespace SportBuddy.Application.DTO;
 
-public record MatchDto(Guid Id, string Name, Discipline Discipline, DateTimeOffset Date, string GroupName);
+public record MatchDto(Guid Id, string Name, Discipline Discipline, DateTimeOffset Date);

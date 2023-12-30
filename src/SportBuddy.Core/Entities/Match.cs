@@ -9,19 +9,17 @@ public class Match
     public string Name { get; private set; }
     public Discipline Discipline { get; private set; }
     public DateTimeOffset Date { get; private set; }
-    public string GroupName { get; private set; }
     // TODO: public Localization Localization { get; }
 
     public Match()
     {
     }
 
-    public Match(string name, Discipline discipline, DateTimeOffset date, string groupName)
+    public Match(string name, Discipline discipline, DateTimeOffset date)
     {
         Id = Guid.NewGuid();
         Name = name;
         Date = date;
         Discipline = discipline;
-        GroupName = groupName;
     }
 }

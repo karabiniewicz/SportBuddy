@@ -18,7 +18,7 @@ namespace SportBuddy.Infrastructure.DAL.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: true),
                     Description = table.Column<string>(type: "text", nullable: true),
-                    Limit = table.Column<int>(type: "integer", nullable: false)
+                    GroupType = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -33,22 +33,32 @@ namespace SportBuddy.Infrastructure.DAL.Migrations
                     Name = table.Column<string>(type: "text", nullable: true),
                     Discipline = table.Column<int>(type: "integer", nullable: false),
                     Date = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    GroupName = table.Column<string>(type: "text", nullable: true)
+                    GroupId = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Matches", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Matches_Groups_GroupId",
+                        column: x => x.GroupId,
+                        principalTable: "Groups",
+                        principalColumn: "Id");
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Matches_GroupId",
+                table: "Matches",
+                column: "GroupId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Groups");
+                name: "Matches");
 
             migrationBuilder.DropTable(
-                name: "Matches");
+                name: "Groups");
         }
     }
 }

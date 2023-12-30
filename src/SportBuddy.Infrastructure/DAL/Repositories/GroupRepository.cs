@@ -14,12 +14,15 @@ internal sealed class GroupRepository(SportBuddyDbContext dbContext) : IGroupRep
     public async Task<Group> GetAsync(Guid id)
         => await _groups.SingleOrDefaultAsync(x => x.Id == id);
 
-    public async Task AddAsync(Group group) 
-        => await _groups.AddAsync(group);
+    public async Task AddAsync(Group group)
+    {
+        await _groups.AddAsync(group);
+        await dbContext.SaveChangesAsync();
+    }
 
-    public Task UpdateAsync(Group group)
+    public async Task UpdateAsync(Group group)
     {
         _groups.Update(group);
-        return Task.CompletedTask;
+        await dbContext.SaveChangesAsync();
     }
 }

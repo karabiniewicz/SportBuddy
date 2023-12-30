@@ -31,7 +31,7 @@ namespace SportBuddy.Infrastructure.DAL.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
-                    b.Property<int>("Limit")
+                    b.Property<int>("GroupType")
                         .HasColumnType("integer");
 
                     b.Property<string>("Name")
@@ -54,15 +54,29 @@ namespace SportBuddy.Infrastructure.DAL.Migrations
                     b.Property<int>("Discipline")
                         .HasColumnType("integer");
 
-                    b.Property<string>("GroupName")
-                        .HasColumnType("text");
+                    b.Property<Guid?>("GroupId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("GroupId");
+
                     b.ToTable("Matches");
+                });
+
+            modelBuilder.Entity("SportBuddy.Core.Entities.Match", b =>
+                {
+                    b.HasOne("SportBuddy.Core.Entities.Group", null)
+                        .WithMany("Matches")
+                        .HasForeignKey("GroupId");
+                });
+
+            modelBuilder.Entity("SportBuddy.Core.Entities.Group", b =>
+                {
+                    b.Navigation("Matches");
                 });
 #pragma warning restore 612, 618
         }

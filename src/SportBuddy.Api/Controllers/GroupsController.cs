@@ -1,35 +1,28 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SportBuddy.Core.Entities;
+using SportBuddy.Core.Repositories;
 
 namespace SportBuddy.Api.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class GroupsController : ControllerBase
+public class GroupsController(IGroupRepository groupRepository) : ControllerBase
 {
-    private static readonly List<Group> _groups = new()
-    {
-        new Group("G1", "gruop 1", 11),
-        new Group("G2", "gruop 2", 10),
-        new Group("G3", "gruop 3 big", 15),
-        new Group("G4", "gruop 4 small", 6),
-    };
-
     [HttpGet("{groupId:guid}")]
-    public ActionResult<Group> Get(Guid groupId)
+    public async Task<ActionResult<Group>> Get(Guid groupId)
     {
-        var group = _groups.Find(x => x.Id == groupId);
+        var group = await groupRepository.GetAsync(groupId);
         return group is null ? NotFound() : Ok(group);
     }
 
     [HttpGet]
-    public ActionResult<IEnumerable<Group>> GetAll()
-        => Ok(_groups);
+    public async Task<ActionResult<IEnumerable<Group>>> GetAll()
+        => Ok(await groupRepository.GetAllAsync());
 
     [HttpPost]
-    public ActionResult Post(Group group)
+    public async Task<ActionResult> Post(Group group)
     {
-        _groups.Add(group);
+        await groupRepository.AddAsync(group);
         return NoContent();
     }
 }
