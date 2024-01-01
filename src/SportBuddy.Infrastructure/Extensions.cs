@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SportBuddy.Application.Abstractions;
 using SportBuddy.Infrastructure.DAL;
 using SportBuddy.Infrastructure.Exceptions;
 
@@ -18,6 +19,13 @@ public static class Extensions
         
         // TODO swagger, security
 
+        var infrastructureAssembly = typeof(Extensions).Assembly;
+        
+        services.Scan(s => s.FromAssemblies(infrastructureAssembly)
+            .AddClasses(c => c.AssignableTo(typeof(IQueryHandler<,>)))
+            .AsImplementedInterfaces()
+            .WithScopedLifetime());
+        
         return services;
     }
     
