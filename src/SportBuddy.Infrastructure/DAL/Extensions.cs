@@ -14,10 +14,12 @@ internal static class Extensions
     {
         services.Configure<PostgresOptions>(configuration.GetRequiredSection(OptionsSectionName));
         var postgresOptions = configuration.GetOptions<PostgresOptions>(OptionsSectionName);
-
         services.AddDbContext<SportBuddyDbContext>(x => x.UseNpgsql(postgresOptions.ConnectionString));
+        
         services.AddScoped<IGroupRepository, GroupRepository>();
         services.AddHostedService<DatabaseInitializer>();
+        // TODO: services.AddScoped<IUnitOfWork, PostgresUnitOfWork>();
+        
         return services;
     }
 }

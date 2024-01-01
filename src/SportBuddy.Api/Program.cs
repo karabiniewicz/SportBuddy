@@ -7,6 +7,8 @@ builder.Services
     .AddInfrastructure(builder.Configuration)
     .AddControllers();
 
+// TODO: loggerConfiguration
+
 var app = builder.Build();
 app.UseInfrastructure();
 app.Run();
