@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using SportBuddy.Application.Abstractions;
 using SportBuddy.Infrastructure.DAL;
 using SportBuddy.Infrastructure.Exceptions;
+using SportBuddy.Infrastructure.Security;
 
 namespace SportBuddy.Infrastructure;
 
@@ -13,6 +14,7 @@ public static class Extensions
     {
         services.AddControllers();
         services.AddSingleton<ExceptionMiddleware>();
+        services.AddSecurity();
         
         services
             .AddPostgres(configuration);
