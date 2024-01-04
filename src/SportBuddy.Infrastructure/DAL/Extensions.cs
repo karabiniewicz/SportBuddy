@@ -17,6 +17,7 @@ internal static class Extensions
         services.AddDbContext<SportBuddyDbContext>(x => x.UseNpgsql(postgresOptions.ConnectionString));
         
         services.AddScoped<IGroupRepository, GroupRepository>();
+        services.AddScoped<IUserRepository, UserRepository>();
         services.AddHostedService<DatabaseInitializer>();
         // TODO: services.AddScoped<IUnitOfWork, PostgresUnitOfWork>();
         

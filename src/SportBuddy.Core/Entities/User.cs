@@ -1,12 +1,14 @@
-﻿namespace SportBuddy.Core.Entities;
+﻿using SportBuddy.Core.ValueObjects;
 
-public class User(Guid id, string email, string username, string password, string fullName, string role, DateTime createdAt)
+namespace SportBuddy.Core.Entities;
+
+public class User(UserId id, Email email, Username username, Password password, FullName fullName, Role role, DateTime createdAt)
 {
-    public Guid Id { get; private set; } = id;
-    public string Email { get; private set; } = email;
-    public string Username { get; private set; } = username;
-    public string Password { get; private set; } = password;
-    public string FullName { get; private set; } = fullName;
-    public string Role { get; private set; } = role;
+    public UserId Id { get; private set; } = id;
+    public Email Email { get; private set; } = email;
+    public Username Username { get; private set; } = username;
+    public Password Password { get; private set; } = password;
+    public FullName FullName { get; private set; } = fullName;
+    public Role Role { get; private set; } = role;
     public DateTime CreatedAt { get; private set; } = createdAt;
 }

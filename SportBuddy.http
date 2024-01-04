@@ -1,6 +1,36 @@
 @url = http://localhost:5000
-@matchId = 3d6945a8-84ec-4ed9-85db-505da63753da
-@groupId = 5e05e3ab-76fc-4130-bc0d-108ebd3ea93f
+@matchId = 00000000-0000-0000-0000-000000000001
+@groupId = 00000000-0000-0000-0000-000000000001
+@userId = 00000000-0000-0000-0000-000000000001
+
+###
+GET {{url}}/users
+
+###
+GET {{url}}/users/{{userId}}
+
+###
+POST {{url}}/users
+Content-Type: application/json
+
+{
+    "email": "user@test.com",
+    "username": "username",
+    "password": "password123!",
+    "fullName": "Marek Adamski",
+    "role": "user"
+}
+
+###
+# @name sign_in
+POST {{url}}/users/sign-in
+Content-Type: application/json
+
+{
+    "email": "user@test.com",
+    "password": "password123!"
+}
+
 
 ###
 GET {{url}}/matches

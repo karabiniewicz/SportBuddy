@@ -5,7 +5,8 @@ using SportBuddy.Core.Exceptions;
 
 namespace SportBuddy.Infrastructure.Exceptions;
 
-public class ExceptionMiddleware(ILogger logger) : IMiddleware
+// ReSharper disable once SuggestBaseTypeForParameterInConstructor
+internal sealed class ExceptionMiddleware(ILogger<ExceptionMiddleware> logger) : IMiddleware
 {
     public async Task InvokeAsync(HttpContext context, RequestDelegate next)
     {

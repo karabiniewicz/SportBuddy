@@ -7,7 +7,7 @@ internal sealed class SportBuddyDbContext: DbContext
 {
     public DbSet<Match> Matches { get; set; }
     public DbSet<Group> Groups { get; set; }
-    // TODO: public DbSet<User> Users { get; set; }
+    public DbSet<User> Users { get; set; }
 
     public SportBuddyDbContext(DbContextOptions<SportBuddyDbContext> options) : base(options)
     {
