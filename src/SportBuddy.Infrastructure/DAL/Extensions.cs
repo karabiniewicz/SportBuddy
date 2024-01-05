@@ -19,7 +19,7 @@ internal static class Extensions
         services.AddScoped<IGroupRepository, GroupRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddHostedService<DatabaseInitializer>();
-        // TODO: services.AddScoped<IUnitOfWork, PostgresUnitOfWork>();
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
         
         return services;
     }
