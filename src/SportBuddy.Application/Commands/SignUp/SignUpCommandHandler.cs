@@ -5,7 +5,7 @@ using SportBuddy.Core.Entities;
 using SportBuddy.Core.Repositories;
 using SportBuddy.Core.ValueObjects;
 
-namespace SportBuddy.Application.Modules.Users.Commands.SignUp;
+namespace SportBuddy.Application.Commands.SignUp;
 
 internal sealed class SignUpCommandHandler(IUserRepository userRepository, IPasswordManager passwordManager) : ICommandHandler<SignUpCommand>
 {

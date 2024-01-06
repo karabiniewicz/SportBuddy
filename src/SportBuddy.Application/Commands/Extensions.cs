@@ -1,7 +1,7 @@
 ﻿using SportBuddy.Application.DTO;
 using SportBuddy.Core.Entities;
 
-namespace SportBuddy.Application.Modules.Matches.Commands;
+namespace SportBuddy.Application.Commands;
 
 public static class Extensions
 {

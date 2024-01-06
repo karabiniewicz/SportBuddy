@@ -2,9 +2,4 @@
 
 namespace SportBuddy.Application.Exceptions;
 
-public sealed class UsernameAlreadyInUseException : CustomException
-{
-    public UsernameAlreadyInUseException(string username) : base($"Username: '{username}' is already in use.")
-    {
-    }
-}
+public sealed class UsernameAlreadyInUseException(string username) : CustomException($"Username: '{username}' is already in use.");
