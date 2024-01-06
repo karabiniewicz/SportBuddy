@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SportBuddy.Application.Abstractions;
+using SportBuddy.Infrastructure.Auth;
 using SportBuddy.Infrastructure.DAL;
 using SportBuddy.Infrastructure.Exceptions;
 using SportBuddy.Infrastructure.Security;
@@ -15,7 +16,7 @@ public static class Extensions
         services.AddControllers();
         services.AddSingleton<ExceptionMiddleware>();
         services.AddSecurity();
-        
+        services.AddAuth(configuration);
         services
             .AddPostgres(configuration);
         
@@ -34,7 +35,8 @@ public static class Extensions
     public static WebApplication UseInfrastructure(this WebApplication app)
     {
         app.UseMiddleware<ExceptionMiddleware>();
-        // TODO: swagger, authentication
+        app.UseAuthentication();
+        // TODO: swagger
         app.MapControllers();
         
         return app;
