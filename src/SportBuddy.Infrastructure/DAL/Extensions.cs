@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SportBuddy.Application.Abstractions;
 using SportBuddy.Core.Repositories;
+using SportBuddy.Infrastructure.DAL.Decorators;
 using SportBuddy.Infrastructure.DAL.Repositories;
 
 namespace SportBuddy.Infrastructure.DAL;
@@ -18,9 +20,14 @@ internal static class Extensions
         
         services.AddScoped<IGroupRepository, GroupRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
-        services.AddHostedService<DatabaseInitializer>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddHostedService<DatabaseInitializer>();
         
+        services.TryDecorate(typeof(ICommandHandler<>), typeof(UnitOfWorkCommandHandlerDecorator<>));
+
+        // Npgsql DateTime issue
+        AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
         return services;
     }
 }
