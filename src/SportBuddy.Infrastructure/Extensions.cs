@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using SportBuddy.Application.Abstractions;
 using SportBuddy.Infrastructure.Auth;
 using SportBuddy.Infrastructure.DAL;
 using SportBuddy.Infrastructure.Exceptions;
@@ -17,17 +16,13 @@ public static class Extensions
         services.AddSingleton<ExceptionMiddleware>();
         services.AddSecurity();
         services.AddAuth(configuration);
+        services.AddHttpContextAccessor();
+
         services
-            .AddPostgres(configuration);
+            .AddPostgres(configuration)
+            .AddSingleton(TimeProvider.System);
         
         // TODO swagger, security
-
-        var infrastructureAssembly = typeof(Extensions).Assembly;
-        
-        services.Scan(s => s.FromAssemblies(infrastructureAssembly)
-            .AddClasses(c => c.AssignableTo(typeof(IQueryHandler<,>)))
-            .AsImplementedInterfaces()
-            .WithScopedLifetime());
         
         return services;
     }
@@ -36,6 +31,7 @@ public static class Extensions
     {
         app.UseMiddleware<ExceptionMiddleware>();
         app.UseAuthentication();
+        app.UseAuthorization();
         // TODO: swagger
         app.MapControllers();
         

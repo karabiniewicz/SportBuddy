@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using SportBuddy.Application.Security;
 
 namespace SportBuddy.Infrastructure.Auth;
 
@@ -16,6 +17,8 @@ internal static class Extensions
 
         services
             .Configure<AuthOptions>(configuration.GetRequiredSection(OptionsSectionName))
+            .AddSingleton<IAuthenticator, Authenticator>()
+            .AddSingleton<ITokenStorage, HttpContextTokenStorage>()
             .AddAuthentication(o =>
             {
                 o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
