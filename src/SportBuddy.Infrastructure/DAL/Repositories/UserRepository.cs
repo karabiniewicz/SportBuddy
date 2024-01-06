@@ -12,6 +12,9 @@ internal sealed class UserRepository(SportBuddyDbContext dbContext) : IUserRepos
     public Task<User> GetByIdAsync(UserId id)
         => _users.SingleOrDefaultAsync(x => x.Id == id);
 
+    public IQueryable<User> GetAll()
+        => _users.AsNoTracking();
+
     public Task<User> GetByEmailAsync(Email email)
         => _users.SingleOrDefaultAsync(x => x.Email == email);
 
