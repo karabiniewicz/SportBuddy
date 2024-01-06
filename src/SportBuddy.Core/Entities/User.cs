@@ -10,5 +10,5 @@ public class User(UserId id, Email email, Username username, Password password, 
     public Password Password { get; private set; } = password;
     public FullName FullName { get; private set; } = fullName;
     public Role Role { get; private set; } = role;
-    public DateTime CreatedAt { get; private set; } = createdAt;
+    public DateTime CreatedAt { get; private set; } = createdAt; // TODO: update to DateTimeOffSet
 }

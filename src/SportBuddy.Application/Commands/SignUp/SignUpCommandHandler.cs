@@ -7,7 +7,8 @@ using SportBuddy.Core.ValueObjects;
 
 namespace SportBuddy.Application.Commands.SignUp;
 
-internal sealed class SignUpCommandHandler(IUserRepository userRepository, IPasswordManager passwordManager) : ICommandHandler<SignUpCommand>
+internal sealed class SignUpCommandHandler(IUserRepository userRepository, IPasswordManager passwordManager, TimeProvider timeProvider)
+    : ICommandHandler<SignUpCommand>
 {
     public async Task HandleAsync(SignUpCommand command)
     {
@@ -25,7 +26,7 @@ internal sealed class SignUpCommandHandler(IUserRepository userRepository, IPass
         }
 
         var securedPassword = passwordManager.Secure(password);
-        var user = new User(userId, email, username, securedPassword, fullName, role, DateTime.Now); // TODO: use TimeProvider 
+        var user = new User(userId, email, username, securedPassword, fullName, role, timeProvider.GetLocalNow().DateTime); 
 
         await userRepository.AddAsync(user);
     }
