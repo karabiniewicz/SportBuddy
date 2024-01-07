@@ -5,6 +5,7 @@ using SportBuddy.Application.Commands.SIgnIn;
 using SportBuddy.Application.Commands.SignUp;
 using SportBuddy.Application.DTO;
 using SportBuddy.Application.Queries.GetUser;
+using SportBuddy.Application.Queries.GetUsers;
 using SportBuddy.Application.Security;
 
 namespace SportBuddy.Api.Controllers;
@@ -14,6 +15,7 @@ namespace SportBuddy.Api.Controllers;
 public class UsersController(
     ICommandHandler<SignUpCommand> signUpCommandHandler,
     IQueryHandler<GetUserQuery, UserDto> getUserQueryHandler,
+    IQueryHandler<GetUsersQuery, IEnumerable<UserDto>> getUsersQueryHandler,
     ICommandHandler<SignInCommand> signInCommandHandler,
     ITokenStorage tokenStorage) : ControllerBase
 {
@@ -25,10 +27,10 @@ public class UsersController(
         return NoContent();
     }
 
-    [Authorize]
+    [HttpGet("me")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    [HttpGet("me")]
+    [Authorize]
     public async Task<ActionResult<UserDto>> Get()
     {
         if (string.IsNullOrWhiteSpace(User.Identity?.Name))
@@ -50,5 +52,28 @@ public class UsersController(
         await signInCommandHandler.HandleAsync(command);
         var jwt = tokenStorage.Get();
         return jwt;
+    }
+    
+    [HttpGet]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [Authorize]
+    public async Task<ActionResult<IEnumerable<UserDto>>> Get([FromQuery] GetUsersQuery query)
+        => Ok(await getUsersQueryHandler.HandleAsync(query));
+    
+    [HttpGet("{userId:guid}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [Authorize(Policy = "is-admin")]
+    public async Task<ActionResult<UserDto>> Get(Guid userId)
+    {
+        var user = await getUserQueryHandler.HandleAsync(new GetUserQuery(userId));
+        if (user is null)
+        {
+            return NotFound();
+        }
+
+        return user;
     }
 }
