@@ -84,4 +84,15 @@ public class UsersController(
 
         return user;
     }
+    
+    [HttpPost("refresh")]
+    [SwaggerOperation("Refresh access token")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [Authorize]
+    public ActionResult<JwtDto> RefreshToken()
+    {
+        throw new NotImplementedException();
+    }
+
 }

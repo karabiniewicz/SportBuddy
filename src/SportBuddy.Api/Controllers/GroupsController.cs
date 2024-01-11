@@ -36,4 +36,50 @@ public class GroupsController(IGroupRepository groupRepository) : ControllerBase
         await groupRepository.AddAsync(group);
         return NoContent();
     }
+    
+    [HttpGet("{groupId:guid}/matches/archived")]
+    [SwaggerOperation("List of archived matches in the group")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<IEnumerable<Match>>> GetArchivedMatches(Guid groupId)
+    {
+        var group = await groupRepository.GetAsync(groupId);
+        if (group is null)
+        {
+            return NotFound("Group not found");
+        }
+
+        throw new NotImplementedException();
+    }
+
+    [HttpGet("{groupId:guid}/matches/upcoming")]
+    [SwaggerOperation("List of upcoming matches in the group")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<IEnumerable<Match>>> GetUpcomingMatches(Guid groupId)
+    {
+        var group = await groupRepository.GetAsync(groupId);
+        if (group is null)
+        {
+            return NotFound("Group not found");
+        }
+        
+        throw new NotImplementedException();
+    }
+
+    [HttpPost("{groupId:guid}/leave")]
+    [SwaggerOperation("Leave the group")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult> LeaveGroup(Guid groupId)//, [FromBody] LeaveGroupRequest request)
+    {
+        var group = await groupRepository.GetAsync(groupId);
+        if (group is null)
+        {
+            return NotFound("Group not found");
+        }
+
+        throw new NotImplementedException();
+    }
 }
