@@ -29,14 +29,6 @@ public class MatchesController : ControllerBase
         return match is null ? NotFound() : Ok(match.AsDto());
     }
     
-    [HttpGet]
-    [SwaggerOperation("List of all matches")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    [ProducesResponseType(StatusCodes.Status403Forbidden)]
-    public ActionResult<IEnumerable<Match>> GetAll()
-        => Ok(Matches);
-    
     [HttpPost]
     [SwaggerOperation("Create match")]
     [ProducesResponseType(StatusCodes.Status201Created)]
