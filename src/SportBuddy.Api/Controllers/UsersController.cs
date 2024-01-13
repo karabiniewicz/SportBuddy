@@ -28,7 +28,7 @@ public class UsersController(
     {
         command = command with { UserId = Guid.NewGuid() };
         await signUpCommandHandler.HandleAsync(command);
-        return NoContent();
+        return CreatedAtAction(nameof(Get), new {command.UserId}, null);
     }
     
     [HttpPost("sign-in")]
