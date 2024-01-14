@@ -17,9 +17,9 @@ public class Group
     {
     }
 
-    public Group(string name, string description, GroupType groupType)
+    public Group(Guid id, string name, string description, GroupType groupType)
     {
-        Id = Guid.NewGuid();
+        Id = id;
         Name = name;
         Description = description;
         GroupType = groupType;
