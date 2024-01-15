@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SportBuddy.Core.Entities;
 using SportBuddy.Core.Repositories;
+using SportBuddy.Core.ValueObjects;
 
 namespace SportBuddy.Infrastructure.DAL.Repositories;
 
@@ -11,7 +12,7 @@ internal sealed class GroupRepository(SportBuddyDbContext dbContext) : IGroupRep
     public async Task<IEnumerable<Group>> GetAllAsync() 
         => await _groups.ToListAsync();
     
-    public async Task<Group> GetAsync(Guid id)
+    public async Task<Group> GetAsync(GroupId id)
         => await _groups.SingleOrDefaultAsync(x => x.Id == id);
 
     public async Task AddAsync(Group group) 
