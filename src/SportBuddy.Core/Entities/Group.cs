@@ -5,11 +5,10 @@ namespace SportBuddy.Core.Entities;
 
 public class Group
 {
-    // TODO: add value objects
     public GroupId Id { get; private set; }
     public UserId AdminId { get; private set; }
-    public string Name { get; private set; }
-    public string Description { get; private set; }
+    public GroupName Name { get; private set; }
+    public GroupDescription Description { get; private set; }
     public GroupType GroupType { get; private set; }
     public IEnumerable<Match> Matches => _matches;
 
@@ -19,7 +18,7 @@ public class Group
     {
     }
 
-    public Group(GroupId id, UserId adminId, string name, string description, GroupType groupType)
+    public Group(GroupId id, UserId adminId, GroupName name, GroupDescription description, GroupType groupType)
     {
         Id = id;
         AdminId = adminId;

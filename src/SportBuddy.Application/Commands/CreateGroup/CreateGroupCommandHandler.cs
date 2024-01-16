@@ -12,9 +12,7 @@ internal sealed class CreateGroupCommandHandler(IGroupRepository groupRepository
         
         // TODO: check if user have group with the same name
         
-        // TODO: add adminId to group 
-        
-        var group = new Group(groupId, name, description, groupType);
+        var group = new Group(groupId, adminId, name, description, groupType);
         
         await groupRepository.AddAsync(group);
     }

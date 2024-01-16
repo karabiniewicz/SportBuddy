@@ -1,3 +1,5 @@
-﻿namespace SportBuddy.Application.DTO;
+﻿using SportBuddy.Core.Consts;
 
-public record GroupDto(Guid Id, string Name, string Description, int Limit);
+namespace SportBuddy.Application.DTO;
+
+public record GroupDto(Guid Id, Guid AdminId, string Name, string Description, GroupType GroupType);
