@@ -10,7 +10,7 @@ public sealed record Username
     {
         if (string.IsNullOrWhiteSpace(value) || value.Length is > 30 or < 3)
         {
-            throw new InvalidFullNameException(value);
+            throw new InvalidNameException(value);
         }
             
         Value = value;

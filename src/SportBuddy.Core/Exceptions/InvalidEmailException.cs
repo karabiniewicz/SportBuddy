@@ -1,8 +1,3 @@
 ﻿namespace SportBuddy.Core.Exceptions;
 
-public sealed class InvalidEmailException : CustomException
-{
-    public InvalidEmailException(string email) : base($"Email: '{email}' is invalid.")
-    {
-    }
-}
+public sealed class InvalidEmailException(string email) : CustomException($"Email: '{email}' is invalid.");

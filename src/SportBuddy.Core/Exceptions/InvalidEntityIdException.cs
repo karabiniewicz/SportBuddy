@@ -1,8 +1,3 @@
 ﻿namespace SportBuddy.Core.Exceptions;
 
-public sealed class InvalidEntityIdException : CustomException
-{
-    public InvalidEntityIdException(object id) : base($"Cannot set: {id}  as entity identifier.")
-    {
-    }
-}
+public sealed class InvalidEntityIdException(object id) : CustomException($"Cannot set: {id}  as entity identifier.");
