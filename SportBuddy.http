@@ -2,6 +2,7 @@
 @matchId = 00000000-0000-0000-0000-000000000001
 @groupId = 00000000-0000-0000-0000-000000000001
 @userId = 00000000-0000-0000-0000-000000000001
+@adminId = 00000000-0000-0000-0000-000000000001
 
 ###
 GET {{url}}/users
@@ -62,11 +63,14 @@ GET {{url}}/groups
 GET {{url}}/groups/{{groupId}}
 
 ###
-POST {{url}}/matches
+POST {{url}}/groups
+Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
     "id": "00000000-0000-0000-0000-000000000001",
-    "name": "match1",
-    "date": "2020-01-01T00:00:00+00:00"
+    "adminId": "{{adminId}}",
+    "name": "new_group",
+    "description": "description",
+    "groupType": 1 // 0 - private, 1 - public
 }

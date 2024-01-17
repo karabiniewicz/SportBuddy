@@ -35,7 +35,7 @@ public class GroupsController(IGroupRepository groupRepository, ICommandHandler<
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [Authorize]
-    public async Task<ActionResult> Post(CreateGroupCommand command)
+    public async Task<ActionResult> CreateGroup(CreateGroupCommand command)
     {
         var identityName = User.Identity?.Name;
         if (string.IsNullOrWhiteSpace(identityName))
@@ -44,10 +44,10 @@ public class GroupsController(IGroupRepository groupRepository, ICommandHandler<
         }
 
         var userId = Guid.Parse(identityName);
-        
-        command = command with {GroupId = Guid.NewGuid(), AdminId = userId};
+
+        command = command with { Id = Guid.NewGuid(), AdminId = userId };
         await createGroupCommandHandler.HandleAsync(command);
-        return CreatedAtAction(nameof(Get), new {command.GroupId}, null);
+        return CreatedAtAction(nameof(Get), new { GroupId = command.Id }, null);
     }
     
     [HttpGet("{groupId:guid}/matches/archived")]

@@ -10,9 +10,9 @@ public class Group
     public GroupName Name { get; private set; }
     public GroupDescription Description { get; private set; }
     public GroupType GroupType { get; private set; }
-    public IEnumerable<Match> Matches => _matches;
+    public IEnumerable<User> Members => _members;
 
-    private readonly HashSet<Match> _matches = new();
+    private readonly HashSet<User> _members = new();
 
     private Group()
     {

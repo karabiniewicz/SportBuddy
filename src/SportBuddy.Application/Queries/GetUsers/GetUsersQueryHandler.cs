@@ -4,7 +4,7 @@ using SportBuddy.Core.Repositories;
 
 namespace SportBuddy.Application.Queries.GetUsers;
 
-internal sealed  class GetUsersQueryHandler(IUserRepository userRepository): IQueryHandler<GetUsersQuery, IEnumerable<UserDto>>
+internal sealed class GetUsersQueryHandler(IUserRepository userRepository): IQueryHandler<GetUsersQuery, IEnumerable<UserDto>>
 {
     public async Task<IEnumerable<UserDto>> HandleAsync(GetUsersQuery query)
     {
