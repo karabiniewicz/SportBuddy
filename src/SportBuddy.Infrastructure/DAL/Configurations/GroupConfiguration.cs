@@ -12,6 +12,9 @@ internal sealed class GroupConfiguration : IEntityTypeConfiguration<Group>
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Id)
             .HasConversion(x => x.Value, x => new GroupId(x));
+        builder.HasOne<User>()
+            .WithMany()
+            .HasForeignKey(x => x.AdminId);
         builder.Property(x => x.AdminId)
             .HasConversion(x => x.Value, x => new UserId(x))
             .IsRequired();
@@ -24,5 +27,7 @@ internal sealed class GroupConfiguration : IEntityTypeConfiguration<Group>
             .HasMaxLength(255);
         builder.Property(x => x.GroupType)
             .IsRequired();
+        builder.HasMany(x => x.Members)
+            .WithMany();
     }
 }

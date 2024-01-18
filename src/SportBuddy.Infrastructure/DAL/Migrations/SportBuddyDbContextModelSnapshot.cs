@@ -22,6 +22,21 @@ namespace SportBuddy.Infrastructure.DAL.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("GroupUser", b =>
+                {
+                    b.Property<Guid>("GroupId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("MembersId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("GroupId", "MembersId");
+
+                    b.HasIndex("MembersId");
+
+                    b.ToTable("GroupUser");
+                });
+
             modelBuilder.Entity("SportBuddy.Core.Entities.Group", b =>
                 {
                     b.Property<Guid>("Id")
@@ -44,6 +59,8 @@ namespace SportBuddy.Infrastructure.DAL.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AdminId");
+
                     b.ToTable("Groups");
                 });
 
@@ -59,15 +76,10 @@ namespace SportBuddy.Infrastructure.DAL.Migrations
                     b.Property<int>("Discipline")
                         .HasColumnType("integer");
 
-                    b.Property<Guid?>("GroupId")
-                        .HasColumnType("uuid");
-
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("GroupId");
 
                     b.ToTable("Matches");
                 });
@@ -77,8 +89,8 @@ namespace SportBuddy.Infrastructure.DAL.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp without time zone");
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -116,16 +128,28 @@ namespace SportBuddy.Infrastructure.DAL.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("SportBuddy.Core.Entities.Match", b =>
+            modelBuilder.Entity("GroupUser", b =>
                 {
                     b.HasOne("SportBuddy.Core.Entities.Group", null)
-                        .WithMany("Matches")
-                        .HasForeignKey("GroupId");
+                        .WithMany()
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SportBuddy.Core.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("MembersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("SportBuddy.Core.Entities.Group", b =>
                 {
-                    b.Navigation("Matches");
+                    b.HasOne("SportBuddy.Core.Entities.User", null)
+                        .WithMany()
+                        .HasForeignKey("AdminId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

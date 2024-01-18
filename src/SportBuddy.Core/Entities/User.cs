@@ -2,7 +2,7 @@
 
 namespace SportBuddy.Core.Entities;
 
-public class User(UserId id, Email email, Username username, Password password, FullName fullName, Role role, DateTime createdAt)
+public class User(UserId id, Email email, Username username, Password password, FullName fullName, Role role, DateTimeOffset createdAt)
 {
     public UserId Id { get; private set; } = id;
     public Email Email { get; private set; } = email;
@@ -10,5 +10,5 @@ public class User(UserId id, Email email, Username username, Password password, 
     public Password Password { get; private set; } = password;
     public FullName FullName { get; private set; } = fullName;
     public Role Role { get; private set; } = role;
-    public DateTime CreatedAt { get; private set; } = createdAt; // TODO: update to DateTimeOffSet
+    public DateTimeOffset CreatedAt { get; private set; } = createdAt;
 }

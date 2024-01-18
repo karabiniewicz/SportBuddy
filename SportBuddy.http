@@ -3,12 +3,11 @@
 @groupId = 00000000-0000-0000-0000-000000000001
 @userId = 00000000-0000-0000-0000-000000000001
 @adminId = 00000000-0000-0000-0000-000000000001
+@accessToken = {{sign_in.response.body.$.accessToken}}
 
 ###
 GET {{url}}/users
 
-###
-GET {{url}}/users/{{userId}}
 
 ###
 POST {{url}}/users
@@ -23,13 +22,6 @@ Content-Type: application/json
 }
 
 ###
-@accessToken = {{sign_in.response.body.$.accessToken}}
-
-###
-GET {{url}}/users/me
-Authorization: Bearer {{accessToken}}
-
-###
 # @name sign_in
 POST {{url}}/users/sign-in
 Content-Type: application/json
@@ -39,6 +31,30 @@ Content-Type: application/json
     "password": "password123!"
 }
 
+###
+GET {{url}}/users/{{userId}}
+Authorization: Bearer {{accessToken}}
+
+###
+GET {{url}}/users/me
+Authorization: Bearer {{accessToken}}
+
+###
+GET {{url}}/groups
+
+###
+GET {{url}}/groups/{{groupId}}
+
+###
+POST {{url}}/groups
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "name": "new_group",
+    "description": "description",
+    "groupType": 1
+}
 
 ###
 GET {{url}}/matches
@@ -54,23 +70,4 @@ Content-Type: application/json
     "id": "00000000-0000-0000-0000-000000000001",
     "name": "match1",
     "date": "2020-01-01T00:00:00+00:00"
-}
-
-###
-GET {{url}}/groups
-
-###
-GET {{url}}/groups/{{groupId}}
-
-###
-POST {{url}}/groups
-Authorization: Bearer {{accessToken}}
-Content-Type: application/json
-
-{
-    "id": "00000000-0000-0000-0000-000000000001",
-    "adminId": "{{adminId}}",
-    "name": "new_group",
-    "description": "description",
-    "groupType": 1 // 0 - private, 1 - public
 }
