@@ -26,7 +26,7 @@ internal sealed class SignUpCommandHandler(IUserRepository userRepository, IPass
         }
 
         var securedPassword = passwordManager.Secure(password);
-        var user = new User(userId, email, username, securedPassword, fullName, role, timeProvider.GetLocalNow().DateTime); 
+        var user = new User(userId, email, username, securedPassword, fullName, role, timeProvider.GetLocalNow()); 
 
         await userRepository.AddAsync(user);
     }

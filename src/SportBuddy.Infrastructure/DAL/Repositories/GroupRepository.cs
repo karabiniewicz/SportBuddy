@@ -15,6 +15,9 @@ internal sealed class GroupRepository(SportBuddyDbContext dbContext) : IGroupRep
     public async Task<Group> GetAsync(GroupId id)
         => await _groups.SingleOrDefaultAsync(x => x.Id == id);
 
+    public async Task<Group> GetByNameAsync(GroupName name)
+        => await _groups.SingleOrDefaultAsync(x => x.Name == name);
+    
     public async Task AddAsync(Group group) 
         => await _groups.AddAsync(group);
 

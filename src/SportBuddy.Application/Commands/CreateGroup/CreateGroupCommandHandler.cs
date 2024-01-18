@@ -1,4 +1,5 @@
 ﻿using SportBuddy.Application.Abstractions;
+using SportBuddy.Application.Exceptions;
 using SportBuddy.Core.Entities;
 using SportBuddy.Core.Repositories;
 
@@ -10,7 +11,10 @@ internal sealed class CreateGroupCommandHandler(IGroupRepository groupRepository
     {
         var (groupId, adminId, name, description, groupType) = command;
         
-        // TODO: check if user have group with the same name
+        if (await groupRepository.GetByNameAsync(name) is not null)
+        {
+            throw new GroupNameAlreadyInUseException(name);
+        }
         
         var group = new Group(groupId, adminId, name, description, groupType);
         
