@@ -26,4 +26,10 @@ public class Group
         Description = description;
         GroupType = groupType;
     }
+    
+    public void AddMember(User user)
+        => _members.Add(user);
+    
+    public void RemoveMember(UserId id)
+        => _members.RemoveWhere(x => x.Id == id);
 }

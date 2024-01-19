@@ -23,4 +23,9 @@ internal sealed class UserRepository(SportBuddyDbContext dbContext) : IUserRepos
 
     public async Task AddAsync(User user)
         => await _users.AddAsync(user);
+
+    public async Task<IEnumerable<User>> GetUsersToInviteAsync(IEnumerable<UserId> membersIds)
+    {
+        return await _users.Where(x => !membersIds.Contains(x.Id)).ToListAsync();
+    }
 }

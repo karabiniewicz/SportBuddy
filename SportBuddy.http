@@ -8,7 +8,6 @@
 ###
 GET {{url}}/users
 
-
 ###
 POST {{url}}/users
 Content-Type: application/json
@@ -39,6 +38,8 @@ Authorization: Bearer {{accessToken}}
 GET {{url}}/users/me
 Authorization: Bearer {{accessToken}}
 
+
+
 ###
 GET {{url}}/groups
 
@@ -51,10 +52,34 @@ Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-    "name": "new_group",
-    "description": "description",
-    "groupType": 1
+    "name": "Marek Adamski group",
+    "description": "super group",
+    "groupType": 0
 }
+
+### 
+GET {{url}}/groups/{{groupId}}/usersToInvite
+Authorization: Bearer {{accessToken}}
+
+### 
+GET {{url}}/groups/{{groupId}}/users
+
+###
+POST {{url}}/groups/{{groupId}}/users
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "userIds": [
+        "00000000-0000-0000-0000-000000000001"
+    ]
+}
+
+###
+DELETE {{url}}/groups/{{groupId}}/leave
+Authorization: Bearer {{accessToken}}
+
+
 
 ###
 GET {{url}}/matches

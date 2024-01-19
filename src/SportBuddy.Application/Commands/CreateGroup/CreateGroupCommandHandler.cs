@@ -5,7 +5,7 @@ using SportBuddy.Core.Repositories;
 
 namespace SportBuddy.Application.Commands.CreateGroup;
 
-internal sealed class CreateGroupCommandHandler(IGroupRepository groupRepository) : ICommandHandler<CreateGroupCommand>
+internal sealed class CreateGroupCommandHandler(IGroupRepository groupRepository, IUserRepository userRepository) : ICommandHandler<CreateGroupCommand>
 {
     public async Task HandleAsync(CreateGroupCommand command)
     {
@@ -16,7 +16,14 @@ internal sealed class CreateGroupCommandHandler(IGroupRepository groupRepository
             throw new GroupNameAlreadyInUseException(name);
         }
         
+        var admin = await userRepository.GetByIdAsync(adminId);
+        if (admin is null)
+        {
+            throw new UserNotFoundException(adminId);
+        }
+        
         var group = new Group(groupId, adminId, name, description, groupType);
+        group.AddMember(admin);
         
         await groupRepository.AddAsync(group);
     }
