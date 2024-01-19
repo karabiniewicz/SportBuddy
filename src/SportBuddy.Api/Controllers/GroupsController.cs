@@ -4,6 +4,7 @@ using SportBuddy.Application.Abstractions;
 using SportBuddy.Application.Commands.AddGroupMembers;
 using SportBuddy.Application.Commands.CreateGroup;
 using SportBuddy.Application.Commands.CreateMatch;
+using SportBuddy.Application.Commands.LeaveGroup;
 using SportBuddy.Application.DTO;
 using SportBuddy.Application.Queries.GetGroupMembers;
 using SportBuddy.Core.Entities;
@@ -20,6 +21,7 @@ public class GroupsController(
     IUserRepository userRepository,
     ICommandHandler<CreateGroupCommand> createGroupCommandHandler,
     ICommandHandler<AddGroupMembersCommand> addGroupMembersCommandHandler,
+    ICommandHandler<LeaveGroupCommand> leaveGroupCommandHandler,
     IQueryHandler<GetGroupMembersQuery, IEnumerable<UserDto>> getGroupMembersQueryHandler) : ControllerBase
 {
     [HttpGet("{groupId:guid}")]
@@ -90,22 +92,7 @@ public class GroupsController(
             return NotFound();
         }
 
-        // TODO: move to leaveGroupCommandHandler
-        var userId = new UserId(Guid.Parse(identityName));
-
-        var group = await groupRepository.GetAsync(groupId);
-        if (group is null)
-        {
-            return NotFound("Group not found");
-        }
-
-        if (group.Members.All(m => m.Id != userId))
-        {
-            return BadRequest("User is not a member of the group");
-        }
-
-        group.RemoveMember(userId);
-        await groupRepository.UpdateAsync(group);
+        await leaveGroupCommandHandler.HandleAsync(new LeaveGroupCommand(groupId, new UserId(Guid.Parse(identityName))));
 
         return NoContent();
     }
