@@ -9,5 +9,5 @@ public static class Extensions
         => new(entity.Id, entity.Username, entity.FullName);
     
     public static GroupDto AsDto(this Group entity) 
-        => new(entity.Id, entity.Name, entity.Description, entity.GroupType);
+        => new(entity.Id, entity.AdminId, entity.Name, entity.Description, entity.GroupType);
 }

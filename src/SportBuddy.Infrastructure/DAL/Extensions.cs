@@ -20,6 +20,7 @@ internal static class Extensions
         
         services.AddScoped<IGroupRepository, GroupRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IMatchRepository, MatchRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddHostedService<DatabaseInitializer>();
         

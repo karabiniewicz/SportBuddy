@@ -23,6 +23,7 @@ public class GroupsController(
     ICommandHandler<CreateGroupCommand> createGroupCommandHandler,
     ICommandHandler<AddGroupMembersCommand> addGroupMembersCommandHandler,
     ICommandHandler<LeaveGroupCommand> leaveGroupCommandHandler,
+    ICommandHandler<CreateMatchCommand> createMatchCommandHandler,
     IQueryHandler<GetGroupMembersQuery, IEnumerable<UserDto>> getGroupMembersQueryHandler) : ControllerBase
 {
     [HttpGet("{groupId:guid}")]
@@ -91,7 +92,7 @@ public class GroupsController(
             return NotFound();
         }
 
-        await leaveGroupCommandHandler.HandleAsync(new LeaveGroupCommand(groupId, new UserId(Guid.Parse(identityName))));
+        await leaveGroupCommandHandler.HandleAsync(new LeaveGroupCommand(groupId, Guid.Parse(identityName)));
 
         return NoContent();
     }
@@ -151,21 +152,12 @@ public class GroupsController(
             return NotFound();
         }
 
-        var userId = new UserId(Guid.Parse(identityName));
-
-        var group = await groupRepository.GetAsync(groupId);
-        if (group is null)
-        {
-            return NotFound("Group not found");
-        }
-
-        if (group.AdminId != userId)
-        {
-            return Forbid();
-        }
-
-        // TODO
-        throw new NotImplementedException();
+        command = command with { Id = Guid.NewGuid(), GroupId = groupId, UserId = Guid.Parse(identityName) };
+        await createMatchCommandHandler.HandleAsync(command);
+        
+        // var actionName = nameof(MatchesController.GetMatch);
+        // return CreatedAtAction(actionName, "Matches", new { matchId = command.Id }, null);
+        return NoContent();
     }
 
     [HttpGet("{groupId:guid}/matches/archived")]

@@ -71,7 +71,7 @@ Content-Type: application/json
 
 {
     "userIds": [
-        "00000000-0000-0000-0000-000000000001"
+        "f60f6915-0f47-4bea-b616-81dd1a5e9eb8"
     ]
 }
 
@@ -79,6 +79,20 @@ Content-Type: application/json
 DELETE {{url}}/groups/{{groupId}}/leave
 Authorization: Bearer {{accessToken}}
 
+###
+POST {{url}}/groups/{{groupId}}/matches
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{
+    "name": "match3",
+    "discipline": 0,
+    "location": "Warsaw",
+    "start": "2020-01-01T00:10:00+00:00",
+    "end": "2020-01-01T00:11:00+00:00",
+    "charge": 10.0,
+    "limit": 10
+}
 
 
 ###
