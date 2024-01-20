@@ -7,4 +7,7 @@ public static class Extensions
 {
     public static UserDto AsDto(this User entity)
         => new(entity.Id, entity.Username, entity.FullName);
+    
+    public static GroupDto AsDto(this Group entity) 
+        => new(entity.Id, entity.Name, entity.Description, entity.GroupType);
 }

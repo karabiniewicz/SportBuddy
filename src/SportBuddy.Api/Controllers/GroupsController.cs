@@ -6,6 +6,7 @@ using SportBuddy.Application.Commands.CreateGroup;
 using SportBuddy.Application.Commands.CreateMatch;
 using SportBuddy.Application.Commands.LeaveGroup;
 using SportBuddy.Application.DTO;
+using SportBuddy.Application.Queries;
 using SportBuddy.Application.Queries.GetGroupMembers;
 using SportBuddy.Core.Entities;
 using SportBuddy.Core.Repositories;
@@ -28,11 +29,10 @@ public class GroupsController(
     [SwaggerOperation("Group with the given id")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<Group>> Get(Guid groupId)
+    public async Task<ActionResult<GroupDto>> Get(Guid groupId)
     {
         var group = await groupRepository.GetAsync(groupId);
-        return group is null ? NotFound() : Ok(group); 
-        // TODO: return a GroupDto instead of Group
+        return group is null ? NotFound() : Ok(group.AsDto()); 
     }
 
     [HttpGet]
@@ -40,8 +40,8 @@ public class GroupsController(
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
-    public async Task<ActionResult<IEnumerable<Group>>> GetAll()
-        => Ok(await groupRepository.GetAllAsync()); // TODO: return a GroupDto instead of Group
+    public async Task<ActionResult<IEnumerable<GroupDto>>> GetAll()
+        => Ok((await groupRepository.GetAllAsync()).Select(x => x.AsDto()));
 
     [HttpPost]
     [SwaggerOperation("Create group")]
@@ -77,7 +77,6 @@ public class GroupsController(
     }
 
     // TODO: consider what should happen if a group admin leaves the group
-    // [HttpPost("{groupId:guid}/leave")]
     [HttpDelete("{groupId:guid}/leave")]
     [SwaggerOperation("Leave the group")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -128,8 +127,7 @@ public class GroupsController(
 
         var groupMembers = group.Members.Select(m => m.Id);
         var users = await userRepository.GetUsersToInviteAsync(groupMembers);
-        return Ok(users);
-        // TODO: return a UserDto instead of User
+        return Ok(users.Select(x => x.AsDto()));
     }
 
     [HttpGet("{groupId:guid}/users")]
