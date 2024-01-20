@@ -49,6 +49,11 @@ public static class Extensions
             reDoc.DocumentTitle = "SportBuddy API";
         });
         app.UseAuthentication();
+        app.UseRouting();
+        app.UseCors(builder => builder
+            .AllowAnyOrigin()
+            .AllowAnyHeader()
+            .AllowAnyMethod());
         app.UseAuthorization();
         app.MapControllers();
         

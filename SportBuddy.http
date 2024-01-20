@@ -26,7 +26,7 @@ POST {{url}}/users/sign-in
 Content-Type: application/json
 
 {
-    "email": "user@test.com",
+    "email": "user1@test.com",
     "password": "password123!"
 }
 
@@ -52,7 +52,7 @@ Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 {
-    "name": "Marek Adamski group",
+    "name": "Marek Adamski group3",
     "description": "super group",
     "groupType": 0
 }
@@ -88,29 +88,26 @@ Content-Type: application/json
     "name": "match3",
     "discipline": 0,
     "location": "Warsaw",
-    "start": "2020-01-01T00:10:00+00:00",
-    "end": "2020-01-01T00:11:00+00:00",
+    "date": "2020-01-01",
+    "start": "10:00",
+    "end": "11:00",
     "charge": 10.0,
     "limit": 10
 }
 
+###
+GET {{url}}/groups/{{groupId}}/matches/archived
+
+###
+GET {{url}}/groups/{{groupId}}/matches/upcoming
+
 
 
 ###
-GET {{url}}/matches
+GET {{url}}/matches?date=2020-01-01
 
 ###
 GET {{url}}/matches/{{matchId}}
-
-###
-POST {{url}}/matches
-Content-Type: application/json
-
-{
-    "id": "00000000-0000-0000-0000-000000000001",
-    "name": "match1",
-    "date": "2020-01-01T00:00:00+00:00"
-}
 
 ###
 POST {{url}}/matches/{{matchId}}/register
@@ -122,3 +119,4 @@ Authorization: Bearer {{accessToken}}
 
 ### 
 GET {{url}}/matches/{{matchId}}/members
+

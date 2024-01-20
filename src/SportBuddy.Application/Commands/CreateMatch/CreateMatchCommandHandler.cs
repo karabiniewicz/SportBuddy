@@ -9,7 +9,7 @@ internal sealed class CreateMatchCommandHandler(IGroupRepository groupRepository
 {
     public async Task HandleAsync(CreateMatchCommand command)
     {
-        var (id, name, discipline, location, start, end, charge, limit, groupId, userId) = command;
+        var (id, name, discipline, location, date, start, end, charge, limit, groupId, userId) = command;
 
         var group = await groupRepository.GetAsync(groupId);
         if (group is null)
@@ -22,7 +22,7 @@ internal sealed class CreateMatchCommandHandler(IGroupRepository groupRepository
             throw new UserIsNotAdminException(userId, groupId);
         }
         
-        var match = new Match(id, name, discipline, location, start, end, charge, limit, groupId);
+        var match = new Match(id, name, discipline, location, start, end, date, charge, limit, groupId);
         group.AddMatch(match);
         await matchRepository.AddAsync(match);
     }

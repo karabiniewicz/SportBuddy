@@ -19,7 +19,9 @@ namespace SportBuddy.Api.Controllers;
 [Route("[controller]")]
 public class GroupsController(
     IGroupRepository groupRepository,
+    IMatchRepository matchRepository,
     IUserRepository userRepository,
+    TimeProvider timeProvider,
     ICommandHandler<CreateGroupCommand> createGroupCommandHandler,
     ICommandHandler<AddGroupMembersCommand> addGroupMembersCommandHandler,
     ICommandHandler<LeaveGroupCommand> leaveGroupCommandHandler,
@@ -33,7 +35,7 @@ public class GroupsController(
     public async Task<ActionResult<GroupDto>> Get(Guid groupId)
     {
         var group = await groupRepository.GetAsync(groupId);
-        return group is null ? NotFound() : Ok(group.AsDto()); 
+        return group is null ? NotFound() : Ok(group.AsDtoWithMembers()); 
     }
 
     [HttpGet]
@@ -164,7 +166,7 @@ public class GroupsController(
     [SwaggerOperation("List of archived matches in the group")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<IEnumerable<Match>>> GetArchivedMatches(Guid groupId)
+    public async Task<ActionResult<IEnumerable<MatchDto>>> GetArchivedMatches(Guid groupId)
     {
         var group = await groupRepository.GetAsync(groupId);
         if (group is null)
@@ -172,7 +174,10 @@ public class GroupsController(
             return NotFound("Group not found");
         }
 
-        throw new NotImplementedException();
+        var today = DateOnly.FromDateTime(timeProvider.GetLocalNow().DateTime);
+        
+        var matches = await matchRepository.GetArchivedMatchesAsync(groupId, today);
+        return Ok(matches.Select(x => x.AsDto()));
     }
 
     [HttpGet("{groupId:guid}/matches/upcoming")]
@@ -187,6 +192,9 @@ public class GroupsController(
             return NotFound("Group not found");
         }
 
-        throw new NotImplementedException();
+        var today = DateOnly.FromDateTime(timeProvider.GetLocalNow().DateTime);
+
+        var matches = await matchRepository.GetUpcomingMatchesAsync(groupId, today);
+        return Ok(matches.Select(x => x.AsDto()));
     }
 }
