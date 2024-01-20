@@ -43,9 +43,20 @@ public class GroupsController(
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [Authorize]
     public async Task<ActionResult<IEnumerable<GroupDto>>> GetAll()
-        => Ok((await groupRepository.GetAllAsync()).Select(x => x.AsDto()));
+    {
+        var identityName = User.Identity?.Name;
+        if (string.IsNullOrWhiteSpace(identityName))
+        {
+            return NotFound();
+        }
 
+        var userId = Guid.Parse(identityName);
+        var groups = await groupRepository.GetAllUserAsync(userId);
+        return Ok(groups.Select(x => x.AsDto()));
+    }
+    
     [HttpPost]
     [SwaggerOperation("Create group")]
     [ProducesResponseType(StatusCodes.Status201Created)]

@@ -1,5 +1,4 @@
 ﻿using SportBuddy.Application.Abstractions;
-using SportBuddy.Application.Commands;
 using SportBuddy.Application.DTO;
 using SportBuddy.Application.Exceptions;
 using SportBuddy.Core.Repositories;
