@@ -9,6 +9,5 @@ public interface IMatchRepository
     Task<Match> GetAsync(MatchId id);
     Task<Match> GetByNameAsync(MatchName name);
     Task AddAsync(Match match);
-
-    
+    Task UpdateAsync(Match match);
 }

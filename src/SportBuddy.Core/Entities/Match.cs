@@ -22,4 +22,10 @@ public class Match(MatchId id, MatchName name, Discipline discipline, Location l
     public IEnumerable<User> Members => _members;
     private readonly HashSet<User> _members = new();
     // public IEnumerable<User> ReserveMembers => _reserveMembers;
+    
+    public void AddMember(User user)
+        => _members.Add(user);
+    
+    public void RemoveMember(UserId id) 
+        => _members.RemoveWhere(x => x.Id == id);
 }

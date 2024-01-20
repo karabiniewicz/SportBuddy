@@ -95,6 +95,7 @@ Content-Type: application/json
 }
 
 
+
 ###
 GET {{url}}/matches
 
@@ -110,3 +111,14 @@ Content-Type: application/json
     "name": "match1",
     "date": "2020-01-01T00:00:00+00:00"
 }
+
+###
+POST {{url}}/matches/{{matchId}}/register
+Authorization: Bearer {{accessToken}}
+
+###
+DELETE {{url}}/matches/{{matchId}}/leave
+Authorization: Bearer {{accessToken}}
+
+### 
+GET {{url}}/matches/{{matchId}}/members
