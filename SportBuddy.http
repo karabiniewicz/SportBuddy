@@ -42,6 +42,7 @@ Authorization: Bearer {{accessToken}}
 
 ###
 GET {{url}}/groups
+Authorization: Bearer {{accessToken}}
 
 ###
 GET {{url}}/groups/{{groupId}}
@@ -88,7 +89,7 @@ Content-Type: application/json
     "name": "match3",
     "discipline": 0,
     "location": "Warsaw",
-    "date": "2020-01-01",
+    "date": "2024-02-11",
     "start": "10:00",
     "end": "11:00",
     "charge": 10.0,
@@ -97,14 +98,16 @@ Content-Type: application/json
 
 ###
 GET {{url}}/groups/{{groupId}}/matches/archived
+Authorization: Bearer {{accessToken}}
 
 ###
 GET {{url}}/groups/{{groupId}}/matches/upcoming
-
+Authorization: Bearer {{accessToken}}
 
 
 ###
 GET {{url}}/matches?date=2020-01-01
+Authorization: Bearer {{accessToken}}
 
 ###
 GET {{url}}/matches/{{matchId}}

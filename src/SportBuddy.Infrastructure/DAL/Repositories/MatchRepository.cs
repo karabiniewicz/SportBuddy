@@ -30,11 +30,13 @@ internal sealed class MatchRepository(SportBuddyDbContext dbContext) : IMatchRep
 
     public async Task<IEnumerable<Match>> GetArchivedMatchesAsync(GroupId groupId, DateOnly today)
         => await _matches
+            .Include(x => x.Members)
             .Where(x => x.GroupId == groupId && x.Date < today)
             .ToListAsync();
 
     public async Task<IEnumerable<Match>> GetUpcomingMatchesAsync(GroupId groupId, DateOnly today)
         => await _matches
+            .Include(x => x.Members)
             .Where(x => x.GroupId == groupId && x.Date >= today)
             .ToListAsync();
 

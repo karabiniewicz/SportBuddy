@@ -35,7 +35,7 @@ public class GroupsController(
     public async Task<ActionResult<GroupDto>> Get(Guid groupId)
     {
         var group = await groupRepository.GetAsync(groupId);
-        return group is null ? NotFound() : Ok(group.AsDtoWithMembers()); 
+        return group is null ? NotFound() : Ok(group.AsDto()); 
     }
 
     [HttpGet]
@@ -177,6 +177,7 @@ public class GroupsController(
     [SwaggerOperation("List of archived matches in the group")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [Authorize]
     public async Task<ActionResult<IEnumerable<MatchDto>>> GetArchivedMatches(Guid groupId)
     {
         var group = await groupRepository.GetAsync(groupId);
@@ -195,6 +196,7 @@ public class GroupsController(
     [SwaggerOperation("List of upcoming matches in the group")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [Authorize]
     public async Task<ActionResult<IEnumerable<Match>>> GetUpcomingMatches(Guid groupId)
     {
         var group = await groupRepository.GetAsync(groupId);
