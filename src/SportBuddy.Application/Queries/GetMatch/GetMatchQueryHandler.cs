@@ -9,7 +9,7 @@ internal sealed class GetMatchQueryHandler(IMatchRepository matchRepository): IQ
 {
     public async Task<MatchDto> HandleAsync(GetMatchQuery query)
     {
-        var match = await matchRepository.GetAsync(query.MatchId) ?? throw new MatchNotFoundException(query.MatchId);
+        var match = await matchRepository.GetByIdAsync(query.MatchId) ?? throw new MatchNotFoundException(query.MatchId);
         return match.AsDto();
     }
 }

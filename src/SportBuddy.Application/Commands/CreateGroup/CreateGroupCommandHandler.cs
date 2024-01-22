@@ -11,11 +11,6 @@ internal sealed class CreateGroupCommandHandler(IGroupRepository groupRepository
     {
         var (groupId, adminId, name, description, groupType) = command;
         
-        if (await groupRepository.GetByNameAsync(name) is not null)
-        {
-            throw new GroupNameAlreadyInUseException(name);
-        }
-        
         var admin = await userRepository.GetByIdAsync(adminId);
         if (admin is null)
         {

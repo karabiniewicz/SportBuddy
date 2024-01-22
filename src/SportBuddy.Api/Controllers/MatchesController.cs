@@ -26,6 +26,7 @@ public class MatchesController(IMatchRepository matchRepository,
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     [Authorize]
     public async Task<ActionResult<IEnumerable<MatchDto>>> GetMyMatches([FromQuery] DateOnly? date)
     {

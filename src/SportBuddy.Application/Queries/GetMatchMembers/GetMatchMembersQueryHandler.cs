@@ -9,7 +9,7 @@ internal sealed class GetMatchMembersQueryHandler(IMatchRepository matchReposito
 {
     public async Task<IEnumerable<UserDto>> HandleAsync(GetMatchMembersQuery query)
     {
-        var match = await matchRepository.GetAsync(query.MatchId) ?? throw new MatchNotFoundException(query.MatchId);
+        var match = await matchRepository.GetByIdAsync(query.MatchId) ?? throw new MatchNotFoundException(query.MatchId);
         return match.Members
             .Select(x => x.AsDto());
     }

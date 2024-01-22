@@ -10,7 +10,7 @@ internal sealed class LeaveMatchCommandHandler(IMatchRepository matchRepository)
     {
         var (matchId, userId) = command;
 
-        var match = await matchRepository.GetAsync(matchId);
+        var match = await matchRepository.GetByIdAsync(matchId);
 
         if (match is null)
         {

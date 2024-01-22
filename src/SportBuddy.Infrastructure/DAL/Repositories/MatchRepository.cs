@@ -20,7 +20,7 @@ internal sealed class MatchRepository(SportBuddyDbContext dbContext) : IMatchRep
     public async Task<IEnumerable<Match>> GetAllAsync()
         => await _matches.ToListAsync();
 
-    public async Task<Match> GetAsync(MatchId id)
+    public async Task<Match> GetByIdAsync(MatchId id)
         => await _matches
             .Include(x => x.Members)
             .SingleOrDefaultAsync(x => x.Id == id);

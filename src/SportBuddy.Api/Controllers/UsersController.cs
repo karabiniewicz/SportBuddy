@@ -46,6 +46,7 @@ public class UsersController(
     [SwaggerOperation("Currently logged in user")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     [Authorize]
     public async Task<ActionResult<UserDto>> GetMe()
     {
@@ -75,15 +76,7 @@ public class UsersController(
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     // TODO: in future only admins [Authorize(Policy = "is-admin")]
     public async Task<ActionResult<UserDto>> Get(Guid userId)
-    {
-        var user = await getUserQueryHandler.HandleAsync(new GetUserQuery(userId));
-        if (user is null)
-        {
-            return NotFound();
-        }
-
-        return user;
-    }
+    => Ok(await getUserQueryHandler.HandleAsync(new GetUserQuery(userId)));
 
     [HttpPost("refresh")]
     [SwaggerOperation("Refresh access token")]
