@@ -7,6 +7,7 @@ using SportBuddy.Application.Commands.CreateMatch;
 using SportBuddy.Application.Commands.LeaveGroup;
 using SportBuddy.Application.DTO;
 using SportBuddy.Application.Queries;
+using SportBuddy.Application.Queries.GetGroup;
 using SportBuddy.Application.Queries.GetGroupMembers;
 using SportBuddy.Core.Entities;
 using SportBuddy.Core.Repositories;
@@ -26,18 +27,16 @@ public class GroupsController(
     ICommandHandler<AddGroupMembersCommand> addGroupMembersCommandHandler,
     ICommandHandler<LeaveGroupCommand> leaveGroupCommandHandler,
     ICommandHandler<CreateMatchCommand> createMatchCommandHandler,
-    IQueryHandler<GetGroupMembersQuery, IEnumerable<UserDto>> getGroupMembersQueryHandler) : ControllerBase
+    IQueryHandler<GetGroupMembersQuery, IEnumerable<UserDto>> getGroupMembersQueryHandler,
+    IQueryHandler<GetGroupQuery, GroupDto> getGroupQueryHandler) : ControllerBase
 {
     [HttpGet("{groupId:guid}")]
     [SwaggerOperation("Group with the given id")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<GroupDto>> Get(Guid groupId)
-    {
-        var group = await groupRepository.GetAsync(groupId);
-        return group is null ? NotFound() : Ok(group.AsDto()); 
-    }
-
+        => Ok(await getGroupQueryHandler.HandleAsync(new GetGroupQuery(groupId)));
+    
     [HttpGet]
     [SwaggerOperation("List of all groups")]
     [ProducesResponseType(StatusCodes.Status200OK)]
