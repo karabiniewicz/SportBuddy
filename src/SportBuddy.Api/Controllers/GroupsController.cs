@@ -9,6 +9,7 @@ using SportBuddy.Application.DTO;
 using SportBuddy.Application.Queries;
 using SportBuddy.Application.Queries.GetGroup;
 using SportBuddy.Application.Queries.GetGroupMembers;
+using SportBuddy.Application.Queries.GetUserGroups;
 using SportBuddy.Core.Entities;
 using SportBuddy.Core.Repositories;
 using SportBuddy.Core.ValueObjects;
@@ -28,20 +29,22 @@ public class GroupsController(
     ICommandHandler<LeaveGroupCommand> leaveGroupCommandHandler,
     ICommandHandler<CreateMatchCommand> createMatchCommandHandler,
     IQueryHandler<GetGroupMembersQuery, IEnumerable<UserDto>> getGroupMembersQueryHandler,
-    IQueryHandler<GetGroupQuery, GroupDto> getGroupQueryHandler) : ControllerBase
+    IQueryHandler<GetGroupQuery, GroupDto> getGroupQueryHandler,
+    IQueryHandler<GetUserGroupsQuery, IEnumerable<GroupDto>> getUserGroupsQueryHandler) : ControllerBase
 {
     [HttpGet("{groupId:guid}")]
     [SwaggerOperation("Group with the given id")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<GroupDto>> Get(Guid groupId)
         => Ok(await getGroupQueryHandler.HandleAsync(new GetGroupQuery(groupId)));
     
     [HttpGet]
-    [SwaggerOperation("List of all groups")]
+    [SwaggerOperation("List of all user groups")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     [Authorize]
     public async Task<ActionResult<IEnumerable<GroupDto>>> GetAll()
     {
@@ -52,8 +55,8 @@ public class GroupsController(
         }
 
         var userId = Guid.Parse(identityName);
-        var groups = await groupRepository.GetAllUserAsync(userId);
-        return Ok(groups.Select(x => x.AsDto()));
+        var groups = await getUserGroupsQueryHandler.HandleAsync(new GetUserGroupsQuery(userId));
+        return Ok(groups);
     }
     
     [HttpPost]

@@ -9,7 +9,7 @@ internal sealed class GroupRepository(SportBuddyDbContext dbContext) : IGroupRep
 {
     private readonly DbSet<Group> _groups = dbContext.Groups;
 
-    public async Task<IEnumerable<Group>> GetAllUserAsync(UserId userId)
+    public async Task<IEnumerable<Group>> GetAllByUserIdAsync(UserId userId)
         => await _groups
             .Include(x => x.Members)
             .Where(x => x.Members.Any(x => x.Id == userId))
