@@ -9,6 +9,7 @@ using SportBuddy.Application.DTO;
 using SportBuddy.Application.Queries;
 using SportBuddy.Application.Queries.GetGroup;
 using SportBuddy.Application.Queries.GetGroupMembers;
+using SportBuddy.Application.Queries.GetGroupUsersToInvite;
 using SportBuddy.Application.Queries.GetUserGroups;
 using SportBuddy.Core.Entities;
 using SportBuddy.Core.Repositories;
@@ -30,7 +31,8 @@ public class GroupsController(
     ICommandHandler<CreateMatchCommand> createMatchCommandHandler,
     IQueryHandler<GetGroupMembersQuery, IEnumerable<UserDto>> getGroupMembersQueryHandler,
     IQueryHandler<GetGroupQuery, GroupDto> getGroupQueryHandler,
-    IQueryHandler<GetUserGroupsQuery, IEnumerable<GroupDto>> getUserGroupsQueryHandler) : ControllerBase
+    IQueryHandler<GetUserGroupsQuery, IEnumerable<GroupDto>> getUserGroupsQueryHandler,
+    IQueryHandler<GetGroupUsersToInviteQuery, IEnumerable<UserDto>> getGroupUsersToInviteQueryHandler) : ControllerBase
 {
     [HttpGet("{groupId:guid}")]
     [SwaggerOperation("Group with the given id")]
@@ -112,9 +114,8 @@ public class GroupsController(
         return NoContent();
     }
 
-    // TODO: only group admin should be able to invite users, and only users that are not already in the group
     [HttpGet("{groupId:guid}/usersToInvite")]
-    [SwaggerOperation("List of all group members")]
+    [SwaggerOperation("List of all users that can be invited to the group")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
@@ -126,24 +127,11 @@ public class GroupsController(
         {
             return NotFound();
         }
-
-        // TODO: move to GetGroupUsersToInviteQueryHandler
+        
         var userId = new UserId(Guid.Parse(identityName));
-
-        var group = await groupRepository.GetAsync(groupId);
-        if (group is null)
-        {
-            return NotFound("Group not found");
-        }
-
-        if (group.AdminId != userId)
-        {
-            return Forbid();
-        }
-
-        var groupMembers = group.Members.Select(m => m.Id);
-        var users = await userRepository.GetUsersToInviteAsync(groupMembers);
-        return Ok(users.Select(x => x.AsDto()));
+        var users = await getGroupUsersToInviteQueryHandler.HandleAsync(new GetGroupUsersToInviteQuery(groupId, userId));
+        
+        return Ok(users);
     }
 
     [HttpGet("{groupId:guid}/users")]
