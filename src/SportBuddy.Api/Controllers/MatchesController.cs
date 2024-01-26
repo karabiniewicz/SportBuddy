@@ -4,25 +4,24 @@ using SportBuddy.Application.Abstractions;
 using SportBuddy.Application.Commands.LeaveMatch;
 using SportBuddy.Application.Commands.RegisterUserToMatch;
 using SportBuddy.Application.DTO;
-using SportBuddy.Application.Queries;
 using SportBuddy.Application.Queries.GetMatch;
 using SportBuddy.Application.Queries.GetMatchMembers;
-using SportBuddy.Core.Repositories;
+using SportBuddy.Application.Queries.GetUserMatches;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace SportBuddy.Api.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class MatchesController(IMatchRepository matchRepository, 
-    TimeProvider timeProvider,
+public class MatchesController(
     IQueryHandler<GetMatchQuery, MatchDto> getMatchQueryHandler,
     IQueryHandler<GetMatchMembersQuery, IEnumerable<UserDto>> getMatchMembersQueryHandler,
+    IQueryHandler<GetUserMatchesQuery, IEnumerable<MatchDto>> getUserMatchesQueryHandler,
     ICommandHandler<RegisterUserToMatchCommand> registerUserToMatchCommandHandler,
     ICommandHandler<LeaveMatchCommand> leaveMatchCommandHandler) : ControllerBase
 {
     [HttpGet]
-    [SwaggerOperation("List of all authorized user matches by optional date from query")]
+    [SwaggerOperation("List of all authorized user matches by optional date from query or today")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
@@ -36,12 +35,7 @@ public class MatchesController(IMatchRepository matchRepository,
             return NotFound();
         }
 
-        date ??= DateOnly.FromDateTime(timeProvider.GetLocalNow().DateTime);
-        var userId = Guid.Parse(identityName);
-        
-        var matches = await matchRepository.GetByUserIdAndDateAsync(userId, date.Value);
-        
-        return Ok(matches.Select(x => x.AsDto()));
+        return Ok(await getUserMatchesQueryHandler.HandleAsync(new GetUserMatchesQuery(Guid.Parse(identityName), date)));
     }
     
     [HttpGet("{matchId:guid}")]
