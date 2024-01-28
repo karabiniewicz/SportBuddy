@@ -6,13 +6,12 @@ using SportBuddy.Application.Commands.CreateGroup;
 using SportBuddy.Application.Commands.CreateMatch;
 using SportBuddy.Application.Commands.LeaveGroup;
 using SportBuddy.Application.DTO;
-using SportBuddy.Application.Queries;
+using SportBuddy.Application.Queries.GetArchivedMatches;
 using SportBuddy.Application.Queries.GetGroup;
 using SportBuddy.Application.Queries.GetGroupMembers;
 using SportBuddy.Application.Queries.GetGroupUsersToInvite;
 using SportBuddy.Application.Queries.GetUserGroups;
 using SportBuddy.Core.Entities;
-using SportBuddy.Core.Repositories;
 using SportBuddy.Core.ValueObjects;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -21,10 +20,6 @@ namespace SportBuddy.Api.Controllers;
 [ApiController]
 [Route("[controller]")]
 public class GroupsController(
-    IGroupRepository groupRepository,
-    IMatchRepository matchRepository,
-    IUserRepository userRepository,
-    TimeProvider timeProvider,
     ICommandHandler<CreateGroupCommand> createGroupCommandHandler,
     ICommandHandler<AddGroupMembersCommand> addGroupMembersCommandHandler,
     ICommandHandler<LeaveGroupCommand> leaveGroupCommandHandler,
@@ -32,6 +27,7 @@ public class GroupsController(
     IQueryHandler<GetGroupMembersQuery, IEnumerable<UserDto>> getGroupMembersQueryHandler,
     IQueryHandler<GetGroupQuery, GroupDto> getGroupQueryHandler,
     IQueryHandler<GetUserGroupsQuery, IEnumerable<GroupDto>> getUserGroupsQueryHandler,
+    IQueryHandler<GetArchivedMatchesQuery, IEnumerable<MatchDto>> getArchivedMatchesQueryHandler,
     IQueryHandler<GetGroupUsersToInviteQuery, IEnumerable<UserDto>> getGroupUsersToInviteQueryHandler) : ControllerBase
 {
     [HttpGet("{groupId:guid}")]
@@ -169,18 +165,7 @@ public class GroupsController(
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [Authorize]
     public async Task<ActionResult<IEnumerable<MatchDto>>> GetArchivedMatches(Guid groupId)
-    {
-        var group = await groupRepository.GetAsync(groupId);
-        if (group is null)
-        {
-            return NotFound("Group not found");
-        }
-
-        var today = DateOnly.FromDateTime(timeProvider.GetLocalNow().DateTime);
-        
-        var matches = await matchRepository.GetArchivedMatchesAsync(groupId, today);
-        return Ok(matches.Select(x => x.AsDto()));
-    }
+        => Ok(await getArchivedMatchesQueryHandler.HandleAsync(new GetArchivedMatchesQuery(groupId)));
 
     [HttpGet("{groupId:guid}/matches/upcoming")]
     [SwaggerOperation("List of upcoming matches in the group")]

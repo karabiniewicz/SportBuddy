@@ -4,8 +4,7 @@ using SportBuddy.Infrastructure;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services
     .AddApplication()
-    .AddInfrastructure(builder.Configuration)
-    .AddControllers();
+    .AddInfrastructure(builder.Configuration);
 
 // TODO: loggerConfiguration
 
