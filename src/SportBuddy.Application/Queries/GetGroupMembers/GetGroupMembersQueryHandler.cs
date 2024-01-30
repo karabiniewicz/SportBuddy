@@ -7,7 +7,7 @@ namespace SportBuddy.Application.Queries.GetGroupMembers;
 
 internal sealed class GetGroupMembersQueryHandler(IGroupRepository groupRepository): IQueryHandler<GetGroupMembersQuery, IEnumerable<UserDto>>
 {
-    public async Task<IEnumerable<UserDto>> HandleAsync(GetGroupMembersQuery query)
+    public async Task<IEnumerable<UserDto>> Handle(GetGroupMembersQuery query, CancellationToken cancellationToken = default)
     {
         var group = await groupRepository.GetAsync(query.GroupId) ?? throw new GroupNotFoundException(query.GroupId);
         return group.Members

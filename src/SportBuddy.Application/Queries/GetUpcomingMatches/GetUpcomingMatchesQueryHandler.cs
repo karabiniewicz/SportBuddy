@@ -8,7 +8,7 @@ namespace SportBuddy.Application.Queries.GetUpcomingMatches;
 internal sealed class GetUpcomingMatchesQueryHandler(IGroupRepository groupRepository, IMatchRepository matchRepository, TimeProvider timeProvider) 
     : IQueryHandler<GetUpcomingMatchesQuery, IEnumerable<MatchDto>>
 {
-    public async Task<IEnumerable<MatchDto>> HandleAsync(GetUpcomingMatchesQuery query)
+    public async Task<IEnumerable<MatchDto>> Handle(GetUpcomingMatchesQuery query, CancellationToken cancellationToken = default)
     {
         _ = await groupRepository.GetAsync(query.GroupId) ?? throw new GroupNotFoundException(query.GroupId);
         

@@ -11,7 +11,7 @@ internal sealed class SignInCommandHandler(
     IPasswordManager passwordManager,
     ITokenStorage tokenStorage) : ICommandHandler<SignInCommand>
 {
-    public async Task HandleAsync(SignInCommand command)
+    public async Task Handle(SignInCommand command, CancellationToken cancellationToken = default)
     {
         var user = await userRepository.GetByEmailAsync(command.Email) ?? throw new InvalidCredentialsException();
 

@@ -8,7 +8,7 @@ namespace SportBuddy.Application.Queries.GetArchivedMatches;
 internal sealed class GetArchivedMatchesQueryHandler(IGroupRepository groupRepository, IMatchRepository matchRepository, TimeProvider timeProvider) 
     : IQueryHandler<GetArchivedMatchesQuery, IEnumerable<MatchDto>>
 {
-    public async Task<IEnumerable<MatchDto>> HandleAsync(GetArchivedMatchesQuery query)
+    public async Task<IEnumerable<MatchDto>> Handle(GetArchivedMatchesQuery query, CancellationToken cancellationToken = default)
     {
         _ = await groupRepository.GetAsync(query.GroupId) ?? throw new GroupNotFoundException(query.GroupId);
         

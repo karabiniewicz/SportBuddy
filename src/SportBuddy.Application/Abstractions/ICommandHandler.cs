@@ -1,6 +1,8 @@
-﻿namespace SportBuddy.Application.Abstractions;
+﻿using MediatR;
 
-public interface ICommandHandler<in TCommand> where TCommand : class, ICommand
+namespace SportBuddy.Application.Abstractions;
+
+public interface ICommandHandler<in TCommand> : IRequestHandler<TCommand> where TCommand : class, ICommand
 {
-    Task HandleAsync(TCommand command);
+    Task Handle(TCommand command, CancellationToken cancellationToken = default);
 }

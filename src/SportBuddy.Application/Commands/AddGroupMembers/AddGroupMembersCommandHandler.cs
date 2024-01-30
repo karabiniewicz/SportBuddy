@@ -7,7 +7,7 @@ namespace SportBuddy.Application.Commands.AddGroupMembers;
 
 internal sealed class AddGroupMembersCommandHandler(IGroupRepository groupRepository, IUserRepository userRepository) : ICommandHandler<AddGroupMembersCommand>
 {
-    public async Task HandleAsync(AddGroupMembersCommand command)
+    public async Task Handle(AddGroupMembersCommand command, CancellationToken cancellationToken = default)
     {
         var (groupId, userIds) = command;
 

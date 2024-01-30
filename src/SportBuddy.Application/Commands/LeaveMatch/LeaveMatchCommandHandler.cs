@@ -6,7 +6,7 @@ namespace SportBuddy.Application.Commands.LeaveMatch;
 
 internal sealed class LeaveMatchCommandHandler(IMatchRepository matchRepository) : ICommandHandler<LeaveMatchCommand>
 {
-    public async Task HandleAsync(LeaveMatchCommand command)
+    public async Task Handle(LeaveMatchCommand command, CancellationToken cancellationToken = default)
     {
         var (matchId, userId) = command;
 

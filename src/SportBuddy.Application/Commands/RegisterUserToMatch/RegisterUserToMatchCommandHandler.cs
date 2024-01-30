@@ -6,7 +6,7 @@ namespace SportBuddy.Application.Commands.RegisterUserToMatch;
 
 internal sealed class RegisterUserToMatchCommandHandler(IMatchRepository matchRepository, IUserRepository userRepository) : ICommandHandler<RegisterUserToMatchCommand>
 {
-    public async Task HandleAsync(RegisterUserToMatchCommand command)
+    public async Task Handle(RegisterUserToMatchCommand command, CancellationToken cancellationToken = default)
     {
         var (matchId, userId) = command;
         

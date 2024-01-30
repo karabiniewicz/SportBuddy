@@ -1,6 +1,8 @@
-﻿namespace SportBuddy.Application.Abstractions;
+﻿using MediatR;
 
-public interface IQuery<TResult>
+namespace SportBuddy.Application.Abstractions;
+
+public interface IQuery<TResult> : IRequest<TResult>
 {
     
 }

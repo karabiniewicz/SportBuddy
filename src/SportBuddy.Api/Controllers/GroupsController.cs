@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SportBuddy.Application.Abstractions;
 using SportBuddy.Application.Commands.AddGroupMembers;
 using SportBuddy.Application.Commands.CreateGroup;
 using SportBuddy.Application.Commands.CreateMatch;
@@ -20,24 +20,14 @@ namespace SportBuddy.Api.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class GroupsController(
-    ICommandHandler<CreateGroupCommand> createGroupCommandHandler,
-    ICommandHandler<AddGroupMembersCommand> addGroupMembersCommandHandler,
-    ICommandHandler<LeaveGroupCommand> leaveGroupCommandHandler,
-    ICommandHandler<CreateMatchCommand> createMatchCommandHandler,
-    IQueryHandler<GetGroupMembersQuery, IEnumerable<UserDto>> getGroupMembersQueryHandler,
-    IQueryHandler<GetGroupQuery, GroupDto> getGroupQueryHandler,
-    IQueryHandler<GetUserGroupsQuery, IEnumerable<GroupDto>> getUserGroupsQueryHandler,
-    IQueryHandler<GetArchivedMatchesQuery, IEnumerable<MatchDto>> getArchivedMatchesQueryHandler,
-    IQueryHandler<GetUpcomingMatchesQuery, IEnumerable<MatchDto>> getUpcomingMatchesQueryHandler,
-    IQueryHandler<GetGroupUsersToInviteQuery, IEnumerable<UserDto>> getGroupUsersToInviteQueryHandler) : ControllerBase
+public class GroupsController(IMediator mediator) : ControllerBase
 {
     [HttpGet("{groupId:guid}")]
     [SwaggerOperation("Group with the given id")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<GroupDto>> Get(Guid groupId)
-        => Ok(await getGroupQueryHandler.HandleAsync(new GetGroupQuery(groupId)));
+        => Ok(await mediator.Send(new GetGroupQuery(groupId)));
     
     [HttpGet]
     [SwaggerOperation("List of all user groups")]
@@ -55,7 +45,7 @@ public class GroupsController(
         }
 
         var userId = Guid.Parse(identityName);
-        var groups = await getUserGroupsQueryHandler.HandleAsync(new GetUserGroupsQuery(userId));
+        var groups = await mediator.Send(new GetUserGroupsQuery(userId));
         return Ok(groups);
     }
     
@@ -75,7 +65,7 @@ public class GroupsController(
         var userId = Guid.Parse(identityName);
 
         command = command with { Id = Guid.NewGuid(), AdminId = userId };
-        await createGroupCommandHandler.HandleAsync(command);
+        await mediator.Send(command);
         return CreatedAtAction(nameof(Get), new { GroupId = command.Id }, null);
     }
 
@@ -88,7 +78,7 @@ public class GroupsController(
     public async Task<ActionResult> AddUsers(Guid groupId, AddGroupMembersCommand command)
     {
         command = command with { GroupId = groupId };
-        await addGroupMembersCommandHandler.HandleAsync(command);
+        await mediator.Send(command);
         return NoContent();
     }
 
@@ -107,7 +97,7 @@ public class GroupsController(
             return NotFound();
         }
 
-        await leaveGroupCommandHandler.HandleAsync(new LeaveGroupCommand(groupId, Guid.Parse(identityName)));
+        await mediator.Send(new LeaveGroupCommand(groupId, Guid.Parse(identityName)));
 
         return NoContent();
     }
@@ -127,7 +117,7 @@ public class GroupsController(
         }
         
         var userId = new UserId(Guid.Parse(identityName));
-        var users = await getGroupUsersToInviteQueryHandler.HandleAsync(new GetGroupUsersToInviteQuery(groupId, userId));
+        var users = await mediator.Send(new GetGroupUsersToInviteQuery(groupId, userId));
         
         return Ok(users);
     }
@@ -137,7 +127,7 @@ public class GroupsController(
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<IEnumerable<UserDto>>> GetGroupMembers(Guid groupId)
-        => Ok(await getGroupMembersQueryHandler.HandleAsync(new GetGroupMembersQuery(groupId)));
+        => Ok(await mediator.Send(new GetGroupMembersQuery(groupId)));
     
     [HttpPost("{groupId:guid}/matches")]
     [SwaggerOperation("Create new match in the group")]
@@ -154,7 +144,7 @@ public class GroupsController(
         }
 
         command = command with { Id = Guid.NewGuid(), GroupId = groupId, UserId = Guid.Parse(identityName) };
-        await createMatchCommandHandler.HandleAsync(command);
+        await mediator.Send(command);
         
         // var actionName = nameof(MatchesController.GetMatch);
         // return CreatedAtAction(actionName, "Matches", new { matchId = command.Id }, null);
@@ -167,7 +157,7 @@ public class GroupsController(
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [Authorize]
     public async Task<ActionResult<IEnumerable<MatchDto>>> GetArchivedMatches(Guid groupId)
-        => Ok(await getArchivedMatchesQueryHandler.HandleAsync(new GetArchivedMatchesQuery(groupId)));
+        => Ok(await mediator.Send(new GetArchivedMatchesQuery(groupId)));
 
     [HttpGet("{groupId:guid}/matches/upcoming")]
     [SwaggerOperation("List of upcoming matches in the group")]
@@ -175,5 +165,5 @@ public class GroupsController(
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [Authorize]
     public async Task<ActionResult<IEnumerable<Match>>> GetUpcomingMatches(Guid groupId)
-        => Ok(await getUpcomingMatchesQueryHandler.HandleAsync(new GetUpcomingMatchesQuery(groupId)));
+        => Ok(await mediator.Send(new GetUpcomingMatchesQuery(groupId)));
 }

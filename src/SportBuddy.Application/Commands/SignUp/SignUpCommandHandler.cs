@@ -10,7 +10,7 @@ namespace SportBuddy.Application.Commands.SignUp;
 internal sealed class SignUpCommandHandler(IUserRepository userRepository, IPasswordManager passwordManager, TimeProvider timeProvider)
     : ICommandHandler<SignUpCommand>
 {
-    public async Task HandleAsync(SignUpCommand command)
+    public async Task Handle(SignUpCommand command, CancellationToken cancellationToken = default)
     {
         var (userId, email, username, password, fullName, commandRole) = command;
         var role = string.IsNullOrWhiteSpace(commandRole) ? Role.User() : new Role(commandRole);

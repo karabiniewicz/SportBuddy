@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SportBuddy.Application.Abstractions;
 using SportBuddy.Application.Commands.SIgnIn;
 using SportBuddy.Application.Commands.SignUp;
 using SportBuddy.Application.DTO;
@@ -13,12 +13,7 @@ namespace SportBuddy.Api.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class UsersController(
-    ICommandHandler<SignUpCommand> signUpCommandHandler,
-    IQueryHandler<GetUserQuery, UserDto> getUserQueryHandler,
-    IQueryHandler<GetUsersQuery, IEnumerable<UserDto>> getUsersQueryHandler,
-    ICommandHandler<SignInCommand> signInCommandHandler,
-    ITokenStorage tokenStorage) : ControllerBase
+public class UsersController(IMediator mediator, ITokenStorage tokenStorage) : ControllerBase
 {
     [HttpPost]
     [SwaggerOperation("Create user account")]
@@ -27,7 +22,7 @@ public class UsersController(
     public async Task<ActionResult> SignUp(SignUpCommand command)
     {
         command = command with { UserId = Guid.NewGuid() };
-        await signUpCommandHandler.HandleAsync(command);
+        await mediator.Send(command);
         return CreatedAtAction(nameof(Get), new {userId = command.UserId}, null);
     }
     
@@ -37,7 +32,7 @@ public class UsersController(
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<JwtDto>> SignIn(SignInCommand command)
     {
-        await signInCommandHandler.HandleAsync(command);
+        await mediator.Send(command);
         var jwt = tokenStorage.Get();
         return jwt;
     }
@@ -57,7 +52,7 @@ public class UsersController(
         }
 
         var userId = Guid.Parse(identityName);
-        var user = await getUserQueryHandler.HandleAsync(new GetUserQuery(userId));
+        var user = await mediator.Send(new GetUserQuery(userId));
 
         return user;
     }
@@ -68,7 +63,7 @@ public class UsersController(
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     public async Task<ActionResult<IEnumerable<UserDto>>> GetAll([FromQuery] GetUsersQuery query)
-        => Ok(await getUsersQueryHandler.HandleAsync(query));
+        => Ok(await mediator.Send(query));
     
     [HttpGet("{userId:guid}")]
     [SwaggerOperation("User with the given id")]
@@ -76,7 +71,7 @@ public class UsersController(
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     // TODO: in future only admins [Authorize(Policy = "is-admin")]
     public async Task<ActionResult<UserDto>> Get(Guid userId)
-    => Ok(await getUserQueryHandler.HandleAsync(new GetUserQuery(userId)));
+    => Ok(await mediator.Send(new GetUserQuery(userId)));
 
     [HttpPost("refresh")]
     [SwaggerOperation("Refresh access token")]
@@ -87,5 +82,4 @@ public class UsersController(
     {
         throw new NotImplementedException();
     }
-
 }

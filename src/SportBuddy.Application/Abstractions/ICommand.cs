@@ -1,6 +1,7 @@
-﻿namespace SportBuddy.Application.Abstractions;
+﻿using MediatR;
 
-public interface ICommand
+namespace SportBuddy.Application.Abstractions;
+
+public interface ICommand : IRequest
 {
-    
 }

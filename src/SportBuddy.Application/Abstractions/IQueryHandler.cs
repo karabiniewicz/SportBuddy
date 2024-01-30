@@ -1,6 +1,8 @@
-﻿namespace SportBuddy.Application.Abstractions;
+﻿using MediatR;
 
-public interface IQueryHandler<in TQuery, TResult> where TQuery: class, IQuery<TResult>
+namespace SportBuddy.Application.Abstractions;
+
+public interface IQueryHandler<in TQuery, TResult> : IRequestHandler<TQuery, TResult> where TQuery: class, IQuery<TResult>
 {
-    Task<TResult> HandleAsync(TQuery query);
+    Task<TResult> Handle(TQuery query, CancellationToken cancellationToken = default);
 }

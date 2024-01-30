@@ -6,7 +6,7 @@ namespace SportBuddy.Application.Queries.GetUserMatches;
 
 internal sealed class GetUserMatchesQueryHandler(IMatchRepository matchRepository, TimeProvider timeProvider) : IQueryHandler<GetUserMatchesQuery, IEnumerable<MatchDto>>
 {
-    public async Task<IEnumerable<MatchDto>> HandleAsync(GetUserMatchesQuery query)
+    public async Task<IEnumerable<MatchDto>> Handle(GetUserMatchesQuery query, CancellationToken cancellationToken = default)
     {
         var (userId, date) = query;
         date ??= DateOnly.FromDateTime(timeProvider.GetLocalNow().DateTime);

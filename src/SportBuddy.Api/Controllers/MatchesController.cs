@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SportBuddy.Application.Abstractions;
 using SportBuddy.Application.Commands.LeaveMatch;
 using SportBuddy.Application.Commands.RegisterUserToMatch;
 using SportBuddy.Application.DTO;
@@ -13,12 +13,7 @@ namespace SportBuddy.Api.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class MatchesController(
-    IQueryHandler<GetMatchQuery, MatchDto> getMatchQueryHandler,
-    IQueryHandler<GetMatchMembersQuery, IEnumerable<UserDto>> getMatchMembersQueryHandler,
-    IQueryHandler<GetUserMatchesQuery, IEnumerable<MatchDto>> getUserMatchesQueryHandler,
-    ICommandHandler<RegisterUserToMatchCommand> registerUserToMatchCommandHandler,
-    ICommandHandler<LeaveMatchCommand> leaveMatchCommandHandler) : ControllerBase
+public class MatchesController(IMediator mediator) : ControllerBase
 {
     [HttpGet]
     [SwaggerOperation("List of all authorized user matches by optional date from query or today")]
@@ -35,7 +30,7 @@ public class MatchesController(
             return NotFound();
         }
 
-        return Ok(await getUserMatchesQueryHandler.HandleAsync(new GetUserMatchesQuery(Guid.Parse(identityName), date)));
+        return Ok(await mediator.Send(new GetUserMatchesQuery(Guid.Parse(identityName), date)));
     }
     
     [HttpGet("{matchId:guid}")]
@@ -43,7 +38,7 @@ public class MatchesController(
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<MatchDto>> GetMatch(Guid matchId)
-        => Ok(await getMatchQueryHandler.HandleAsync(new GetMatchQuery(matchId)));
+        => Ok(await mediator.Send(new GetMatchQuery(matchId)));
     
     [HttpPost("{matchId:guid}/register")]
     [SwaggerOperation("Register user to match")]
@@ -59,7 +54,7 @@ public class MatchesController(
         }
 
         var command = new RegisterUserToMatchCommand(matchId, Guid.Parse(identityName));
-        await registerUserToMatchCommandHandler.HandleAsync(command);
+        await mediator.Send(command);
         return NoContent();
     }
     
@@ -77,7 +72,7 @@ public class MatchesController(
         }
 
         var command = new LeaveMatchCommand(matchId, Guid.Parse(identityName));
-        await leaveMatchCommandHandler.HandleAsync(command);
+        await mediator.Send(command);
         return NoContent();
     }
 
@@ -86,7 +81,7 @@ public class MatchesController(
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<IEnumerable<UserDto>>> GetMatchMembers(Guid matchId)
-    => Ok(await getMatchMembersQueryHandler.HandleAsync(new GetMatchMembersQuery(matchId)));
+    => Ok(await mediator.Send(new GetMatchMembersQuery(matchId)));
     
     [HttpPost("{matchId:guid}/guest/{id}")]
     [SwaggerOperation("Add a guest to the match")]

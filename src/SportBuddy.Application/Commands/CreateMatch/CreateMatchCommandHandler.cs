@@ -7,7 +7,7 @@ namespace SportBuddy.Application.Commands.CreateMatch;
 
 internal sealed class CreateMatchCommandHandler(IGroupRepository groupRepository, IMatchRepository matchRepository) : ICommandHandler<CreateMatchCommand>
 {
-    public async Task HandleAsync(CreateMatchCommand command)
+    public async Task Handle(CreateMatchCommand command, CancellationToken cancellationToken = default)
     {
         var (id, name, discipline, location, date, start, end, charge, limit, groupId, userId) = command;
 

@@ -7,7 +7,7 @@ namespace SportBuddy.Application.Queries.GetGroupUsersToInvite;
 
 internal sealed class GetGroupUsersToInviteQueryHandler(IGroupRepository groupRepository, IUserRepository userRepository) : IQueryHandler<GetGroupUsersToInviteQuery, IEnumerable<UserDto>>
 {
-    public async Task<IEnumerable<UserDto>> HandleAsync(GetGroupUsersToInviteQuery query)
+    public async Task<IEnumerable<UserDto>> Handle(GetGroupUsersToInviteQuery query, CancellationToken cancellationToken = default)
     {
         var group = await groupRepository.GetAsync(query.GroupId) ?? throw new GroupNotFoundException(query.GroupId);
         if (group.AdminId != query.UserId)

@@ -6,7 +6,7 @@ namespace SportBuddy.Application.Commands.LeaveGroup;
 
 internal sealed class LeaveGroupCommandHandler(IGroupRepository groupRepository) : ICommandHandler<LeaveGroupCommand>
 {
-    public async Task HandleAsync(LeaveGroupCommand command)
+    public async Task Handle(LeaveGroupCommand command, CancellationToken cancellationToken = default)
     {
         var (groupId, userId) = command;
 
