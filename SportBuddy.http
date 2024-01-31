@@ -105,6 +105,7 @@ GET {{url}}/groups/{{groupId}}/matches/upcoming
 Authorization: Bearer {{accessToken}}
 
 
+
 ###
 GET {{url}}/matches?date=2020-01-01
 Authorization: Bearer {{accessToken}}

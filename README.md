@@ -4,5 +4,9 @@
 ** This is application for a group 6 project at Gdansk University **
 
 todo:
-* add MediatR 
-* add permissions and roles
+- [x] add MediatR 
+  - [ ] correct save changes (UnitOfWorkCommandHandlerDecorator with mediator not run)
+- [ ] create admin user from db init from command
+- [ ] add permissions and roles
+- [ ] 
+
