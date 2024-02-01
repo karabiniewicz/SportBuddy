@@ -5,7 +5,7 @@
 
 todo:
 - [x] add MediatR 
-  - [ ] correct save changes (UnitOfWorkCommandHandlerDecorator with mediator not run)
+  - [x] correct save changes
 - [ ] create admin user from db init from command
 - [ ] add permissions and roles
 - [ ] 
