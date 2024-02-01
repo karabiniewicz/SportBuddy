@@ -1,21 +1,12 @@
-﻿namespace SportBuddy.Infrastructure.DAL;
+﻿using Microsoft.EntityFrameworkCore.Storage;
+
+namespace SportBuddy.Infrastructure.DAL;
 
 internal sealed class UnitOfWork(SportBuddyDbContext dbContext) : IUnitOfWork
 {
-    public async Task ExecuteAsync(Func<Task> action)
-    {
-        await using var transaction = await dbContext.Database.BeginTransactionAsync();
+    public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
+        => await dbContext.SaveChangesAsync(cancellationToken);
 
-        try
-        {
-            await action();
-            await dbContext.SaveChangesAsync();
-            await transaction.CommitAsync();
-        }
-        catch (Exception)
-        {
-            await transaction.RollbackAsync();
-            throw;
-        }
-    }
+    public async Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken) 
+        => await dbContext.Database.BeginTransactionAsync(cancellationToken);
 }

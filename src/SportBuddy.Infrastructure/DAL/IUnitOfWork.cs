@@ -1,6 +1,10 @@
-﻿namespace SportBuddy.Infrastructure.DAL;
+﻿using Microsoft.EntityFrameworkCore.Storage;
+
+namespace SportBuddy.Infrastructure.DAL;
 
 public interface IUnitOfWork
 {
-    Task ExecuteAsync(Func<Task> action);
+    Task SaveChangesAsync(CancellationToken cancellationToken);
+    Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken);
+
 }
