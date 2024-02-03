@@ -6,7 +6,6 @@
 todo:
 - [x] add MediatR 
   - [x] correct save changes
-- [ ] create admin user from db init from command
 - [ ] add permissions and roles
 - [ ] 
 
