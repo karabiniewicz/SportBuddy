@@ -13,6 +13,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SportBuddy.Application", "s
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SportBuddy.Infrastructure", "src\SportBuddy.Infrastructure\SportBuddy.Infrastructure.csproj", "{FB2CE8D4-F8D0-485B-9860-AABB45B951FC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SportBuddy.Tests.Unit", "tests\SportBuddy.Tests.Unit\SportBuddy.Tests.Unit.csproj", "{A1B0FC4C-198B-4AE5-B58B-553D6F1C8C9C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SportBuddy.Tests.Integration", "tests\SportBuddy.Tests.Integration\SportBuddy.Tests.Integration.csproj", "{2C36F369-CBBB-4174-9228-A40409B8A018}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,6 +42,14 @@ Global
 		{FB2CE8D4-F8D0-485B-9860-AABB45B951FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FB2CE8D4-F8D0-485B-9860-AABB45B951FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FB2CE8D4-F8D0-485B-9860-AABB45B951FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1B0FC4C-198B-4AE5-B58B-553D6F1C8C9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1B0FC4C-198B-4AE5-B58B-553D6F1C8C9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1B0FC4C-198B-4AE5-B58B-553D6F1C8C9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1B0FC4C-198B-4AE5-B58B-553D6F1C8C9C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C36F369-CBBB-4174-9228-A40409B8A018}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C36F369-CBBB-4174-9228-A40409B8A018}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C36F369-CBBB-4174-9228-A40409B8A018}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C36F369-CBBB-4174-9228-A40409B8A018}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{4AC61196-0FAB-4EF2-91AA-F2A06F9067A1} = {1D571D7F-C1E3-4BE1-8D4C-39A925372D4D}
