@@ -1,7 +1,9 @@
 @url = http://localhost:5000
-@matchId = 00000000-0000-0000-0000-000000000001
-@groupId = 00000000-0000-0000-0000-000000000001
-@userId = 00000000-0000-0000-0000-000000000001
+# @url = https://452c-80-238-119-46.ngrok-free.app
+# @url = http://localhost:5142
+@matchId = 4a4e9b9a-0ec7-4610-8c9c-26474828d8ac
+@groupId = af790535-a451-4517-a8d7-77fab84d4192
+@userId = e71d34f1-49f2-42a3-b7c7-625d09f54701
 @adminId = 00000000-0000-0000-0000-000000000001
 @accessToken = {{sign_in.response.body.$.accessToken}}
 
@@ -13,10 +15,10 @@ POST {{url}}/users
 Content-Type: application/json
 
 {
-    "email": "user@test.com",
-    "username": "username",
+    "email": "user@test2137.com",
+    "username": "username2137",
     "password": "password123!",
-    "fullName": "Marek Adamski",
+    "fullName": "Marekkk Adamski",
     "role": "user"
 }
 
@@ -26,8 +28,8 @@ POST {{url}}/users/sign-in
 Content-Type: application/json
 
 {
-    "email": "user1@test.com",
-    "password": "password123!"
+    "email": "admin@test.pl",
+    "password": "p@ssword123"
 }
 
 ###
@@ -72,7 +74,7 @@ Content-Type: application/json
 
 {
     "userIds": [
-        "f60f6915-0f47-4bea-b616-81dd1a5e9eb8"
+        "e71d34f1-49f2-42a3-b7c7-625d09f54701"
     ]
 }
 
