@@ -1,5 +1,6 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -17,7 +18,7 @@ internal sealed class Authenticator(IOptions<AuthOptions> options, TimeProvider 
         new(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(options.Value.SigningKey)), SecurityAlgorithms.HmacSha256);
     private readonly JwtSecurityTokenHandler _jwtSecurityToken = new();
 
-    public JwtDto CreateToken(Guid userId, string role)
+    public string CreateAccessToken(Guid userId, string role)
     {
         var now = timeProvider.GetLocalNow().DateTime;
         var claims = new List<Claim>
@@ -31,6 +32,14 @@ internal sealed class Authenticator(IOptions<AuthOptions> options, TimeProvider 
         var jwt = new JwtSecurityToken(_issuer, _audience, claims, now, expires, _signingCredentials);
         var accessToken = _jwtSecurityToken.WriteToken(jwt);
 
-        return new JwtDto(accessToken);
+        return accessToken;
+    }
+    
+    public string CreateRefreshToken()
+    {
+        var randomNumber = new byte[32];
+        using var rng = RandomNumberGenerator.Create();
+        rng.GetBytes(randomNumber);
+        return Convert.ToBase64String(randomNumber);
     }
 }

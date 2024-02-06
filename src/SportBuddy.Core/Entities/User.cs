@@ -11,4 +11,11 @@ public class User(UserId id, Email email, Username username, Password password, 
     public FullName FullName { get; private set; } = fullName;
     public Role Role { get; private set; } = role;
     public DateTimeOffset CreatedAt { get; private set; } = createdAt;
+    public string RefreshToken { get; set; }
+    public DateTimeOffset RefreshTokenExpiryTime { get; set; }
+    
+    public void SetUserRefreshToken()
+    {
+        // TODO
+    }
 }
