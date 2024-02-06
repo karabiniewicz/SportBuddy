@@ -4,6 +4,6 @@ namespace SportBuddy.Application.Security;
 
 public interface IAuthenticator
 {
-    string CreateAccessToken(Guid userId, string role);
-    string CreateRefreshToken();
+    JwtDto CreateAccessToken(Guid userId, string role);
+    RefreshTokenDto CreateRefreshToken();
 }

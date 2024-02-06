@@ -12,10 +12,11 @@ public class User(UserId id, Email email, Username username, Password password, 
     public Role Role { get; private set; } = role;
     public DateTimeOffset CreatedAt { get; private set; } = createdAt;
     public string RefreshToken { get; set; }
-    public DateTimeOffset RefreshTokenExpiryTime { get; set; }
+    public DateTime RefreshTokenExpiryTime { get; set; }
     
-    public void SetUserRefreshToken()
+    public void SetUserRefreshToken(string refreshToken, DateTime expiryTime)
     {
-        // TODO
+        RefreshToken = refreshToken;
+        RefreshTokenExpiryTime = expiryTime;
     }
 }

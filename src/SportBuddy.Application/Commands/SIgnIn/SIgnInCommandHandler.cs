@@ -22,11 +22,10 @@ internal sealed class SignInCommandHandler(
         }
 
         var jwt = authenticator.CreateAccessToken(user.Id, user.Role);
-        tokenStorage.Set(new JwtDto(jwt));
+        tokenStorage.Set(jwt);
         
         var refreshToken = authenticator.CreateRefreshToken();
-        // TODO: SetRefreshTokenCookie
-        // tokenStorage.SetRefreshTokenCookie(refreshToken);
-        // user.SetUserRefreshToken(refreshToken);
+        tokenStorage.SetRefreshTokenCookie(refreshToken);
+        user.SetUserRefreshToken(refreshToken.Token, refreshToken.ExpiryTime);
     }
 }
