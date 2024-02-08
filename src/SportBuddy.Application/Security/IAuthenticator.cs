@@ -1,9 +1,8 @@
-﻿using SportBuddy.Application.DTO;
+﻿using SportBuddy.Core.Entities;
 
 namespace SportBuddy.Application.Security;
 
 public interface IAuthenticator
 {
-    JwtDto CreateAccessToken(Guid userId, string role);
-    RefreshTokenDto CreateRefreshToken();
+    void Authenticate(User user);
 }

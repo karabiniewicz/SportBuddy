@@ -1,16 +1,12 @@
 ﻿using SportBuddy.Application.Abstractions;
-using SportBuddy.Application.DTO;
 using SportBuddy.Application.Exceptions;
 using SportBuddy.Application.Security;
 using SportBuddy.Core.Repositories;
 
 namespace SportBuddy.Application.Commands.SIgnIn;
 
-internal sealed class SignInCommandHandler(
-    IUserRepository userRepository,
-    IAuthenticator authenticator,
-    IPasswordManager passwordManager,
-    ITokenStorage tokenStorage) : ICommandHandler<SignInCommand>
+internal sealed class SignInCommandHandler(IUserRepository userRepository, IAuthenticator authenticator, IPasswordManager passwordManager)
+    : ICommandHandler<SignInCommand>
 {
     public async Task Handle(SignInCommand command, CancellationToken cancellationToken = default)
     {
@@ -21,11 +17,6 @@ internal sealed class SignInCommandHandler(
             throw new InvalidCredentialsException();
         }
 
-        var jwt = authenticator.CreateAccessToken(user.Id, user.Role);
-        tokenStorage.Set(jwt);
-        
-        var refreshToken = authenticator.CreateRefreshToken();
-        tokenStorage.SetRefreshTokenCookie(refreshToken);
-        user.SetUserRefreshToken(refreshToken.Token, refreshToken.ExpiryTime);
+        authenticator.Authenticate(user);
     }
 }

@@ -6,10 +6,11 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using SportBuddy.Application.DTO;
 using SportBuddy.Application.Security;
+using SportBuddy.Core.Entities;
 
 namespace SportBuddy.Infrastructure.Auth;
 
-internal sealed class Authenticator(IOptions<AuthOptions> options, TimeProvider timeProvider) : IAuthenticator
+internal sealed class Authenticator(IOptions<AuthOptions> options, TimeProvider timeProvider, ITokenStorage tokenStorage) : IAuthenticator
 {
     private readonly string _issuer = options.Value.Issuer;
     private readonly TimeSpan _accessTokenExpiry = options.Value.AccessTokenExpiry ?? TimeSpan.FromHours(1);
@@ -20,7 +21,17 @@ internal sealed class Authenticator(IOptions<AuthOptions> options, TimeProvider 
     private readonly JwtSecurityTokenHandler _jwtSecurityToken = new();
     private readonly DateTime _now = timeProvider.GetLocalNow().DateTime;
 
-    public JwtDto CreateAccessToken(Guid userId, string role)
+    public void Authenticate(User user)
+    {
+        var jwt = CreateAccessToken(user.Id, user.Role);
+        tokenStorage.Set(jwt);
+        
+        var refreshToken = CreateRefreshToken();
+        tokenStorage.SetRefreshTokenCookie(refreshToken);
+        user.SetUserRefreshToken(refreshToken.Token, refreshToken.ExpiryTime);
+    }
+
+    private JwtDto CreateAccessToken(Guid userId, string role)
     {
         var claims = new List<Claim>
         {
@@ -36,7 +47,7 @@ internal sealed class Authenticator(IOptions<AuthOptions> options, TimeProvider 
         return new JwtDto(accessToken);
     }
     
-    public RefreshTokenDto CreateRefreshToken()
+    private RefreshTokenDto CreateRefreshToken()
     {
         var randomNumber = new byte[32];
         using var rng = RandomNumberGenerator.Create();
